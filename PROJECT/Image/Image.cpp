@@ -1,15 +1,15 @@
 #include "Image.hpp"
 
 
-Image::Image(std::string path){
-    std::ifstream ifstr;
+Image::Image(std::string& path):ImageData(path){
+    /*std::ifstream ifstr;
     ifstr.open(path);
     if(!ifstr)std::cout<<"file couldnt load"<<"\n";
     readHeader(ifstr);
-    readData(ifstr, type);
-    ifstr.close();
+    readData(ifstr, type);*/
+    fileIn.close();
     
-    printData();
+    //printData();
 }
 
 
@@ -21,8 +21,9 @@ void Image::copyHeaderData(ImageHeader& h){
 }
 
 
-Image::Image(ImageHeader& h){
-    copyHeaderData(h);
+void Image::save(std::string& path){
+    fileOut.open(path);
+    writeHeader(fileOut);
+    writeData(fileOut, type);
+    fileOut.close();
 }
-
-

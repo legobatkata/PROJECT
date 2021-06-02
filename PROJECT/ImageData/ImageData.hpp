@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../../Utils/Utils.hpp"
+#include "../Utils/Utils.hpp"
 #include "../ImageHeader/ImageHeader.hpp"
 
 struct Pixel{
@@ -10,24 +10,20 @@ struct Pixel{
     Pixel(std::size_t r, std::size_t g, std::size_t b);
 };
 
-
-
-class ImageData{
+class ImageData : public ImageHeader{
 protected:
     Pixel** arr{};
-    std::size_t rows{};
-    std::size_t cols{};
     
     void allocate();
     void release();
     
 public:
-    ImageData() = default;
-    ImageData(ImageHeader& header);
+    ImageData() = delete;
+    ~ImageData();
+    ImageData(std::string& path);
     
     void readData(std::ifstream& ifstr, ImgType type);
+    void writeData(std::ofstream& ofstr, ImgType type);
     void printData();
-    
-    
     
 };

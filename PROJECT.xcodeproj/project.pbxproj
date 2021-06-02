@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		F07104682666CEC400E1D715 /* ImageData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F07104662666CEC400E1D715 /* ImageData.cpp */; };
 		F07104692666CEC400E1D715 /* ImageData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F07104662666CEC400E1D715 /* ImageData.cpp */; };
+		F07104772667CDCD00E1D715 /* ImageEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F07104752667CDCD00E1D715 /* ImageEditor.cpp */; };
+		F07104782667CDCD00E1D715 /* ImageEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F07104752667CDCD00E1D715 /* ImageEditor.cpp */; };
 		F09E04AC2614AB1600555F87 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F09E04AB2614AB1600555F87 /* main.cpp */; };
 		F0CBFF382659167C00DCD6EE /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F0CBFF372659167C00DCD6EE /* main.cpp */; };
 		F0CBFF402659186300DCD6EE /* catch2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F0CBFF3F2659186300DCD6EE /* catch2.cpp */; };
@@ -44,6 +46,8 @@
 /* Begin PBXFileReference section */
 		F07104662666CEC400E1D715 /* ImageData.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ImageData.cpp; sourceTree = "<group>"; };
 		F07104672666CEC400E1D715 /* ImageData.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ImageData.hpp; sourceTree = "<group>"; };
+		F07104752667CDCD00E1D715 /* ImageEditor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ImageEditor.cpp; sourceTree = "<group>"; };
+		F07104762667CDCD00E1D715 /* ImageEditor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ImageEditor.hpp; sourceTree = "<group>"; };
 		F09E04A82614AB1600555F87 /* PROJECT */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = PROJECT; sourceTree = BUILT_PRODUCTS_DIR; };
 		F09E04AB2614AB1600555F87 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		F0CBFF352659167C00DCD6EE /* PROJECT_TESTS */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = PROJECT_TESTS; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -76,6 +80,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F07104722667570A00E1D715 /* ImageEditor */ = {
+			isa = PBXGroup;
+			children = (
+				F07104752667CDCD00E1D715 /* ImageEditor.cpp */,
+				F07104762667CDCD00E1D715 /* ImageEditor.hpp */,
+			);
+			path = ImageEditor;
+			sourceTree = "<group>";
+		};
 		F09E049F2614AB1600555F87 = {
 			isa = PBXGroup;
 			children = (
@@ -97,8 +110,11 @@
 		F09E04AA2614AB1600555F87 /* PROJECT */ = {
 			isa = PBXGroup;
 			children = (
+				F07104722667570A00E1D715 /* ImageEditor */,
 				F0CBFF51265FEF9400DCD6EE /* Utils */,
-				F0CBFF782666C62500DCD6EE /* ImageClasses */,
+				F0CBFF43265D8F2000DCD6EE /* ImageHeader */,
+				F0CBFF6C2666936200DCD6EE /* ImageData */,
+				F0CBFF4A265D927800DCD6EE /* Image */,
 				F09E04AB2614AB1600555F87 /* main.cpp */,
 			);
 			path = PROJECT;
@@ -148,16 +164,6 @@
 				F07104672666CEC400E1D715 /* ImageData.hpp */,
 			);
 			path = ImageData;
-			sourceTree = "<group>";
-		};
-		F0CBFF782666C62500DCD6EE /* ImageClasses */ = {
-			isa = PBXGroup;
-			children = (
-				F0CBFF6C2666936200DCD6EE /* ImageData */,
-				F0CBFF4A265D927800DCD6EE /* Image */,
-				F0CBFF43265D8F2000DCD6EE /* ImageHeader */,
-			);
-			path = ImageClasses;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -237,6 +243,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F07104772667CDCD00E1D715 /* ImageEditor.cpp in Sources */,
 				F0CBFF4D265D928800DCD6EE /* Image.cpp in Sources */,
 				F0CBFF46265D8F4E00DCD6EE /* ImageHeader.cpp in Sources */,
 				F09E04AC2614AB1600555F87 /* main.cpp in Sources */,
@@ -253,6 +260,7 @@
 				F0CBFF4E265D928800DCD6EE /* Image.cpp in Sources */,
 				F0CBFF47265D8F4E00DCD6EE /* ImageHeader.cpp in Sources */,
 				F07104692666CEC400E1D715 /* ImageData.cpp in Sources */,
+				F07104782667CDCD00E1D715 /* ImageEditor.cpp in Sources */,
 				F0CBFF55265FEFA600DCD6EE /* Utils.cpp in Sources */,
 				F0CBFF382659167C00DCD6EE /* main.cpp in Sources */,
 			);

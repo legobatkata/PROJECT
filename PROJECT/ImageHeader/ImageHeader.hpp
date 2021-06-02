@@ -2,7 +2,7 @@
 #define ImageHeader_hpp
 
 #include <iostream>
-#include "../../Utils/Utils.hpp"
+#include "../Utils/Utils.hpp"
 
 using std::size_t;
 
@@ -17,16 +17,23 @@ protected:
     size_t height{};
     size_t maxValue = 0;
     
-    ImgType translateType(const std::string& typeStr);
+    //temp test
+    std::ifstream fileIn;
+    std::ofstream fileOut;
+    
+    ImgType strToType(const std::string& typeStr);
+    std::string typeToStr(const ImgType& type);
     
 public:
-    //ImageHeader() = delete;
-    ImageHeader();
+    ImageHeader() = delete;
+    ImageHeader(std::string& path);
     ImageHeader(ImgType t, size_t w, size_t h);
     ImageHeader(ImgType t, size_t w, size_t h, size_t v);
     
     void readHeader(std::ifstream& istr);
+    void writeHeader(std::ofstream& ostr);
     
+    void printHeader();
     
     ImgType getType() const;
     size_t getWidth() const;
