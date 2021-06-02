@@ -5,12 +5,15 @@
 #include "ImageEditor/ImageEditor.hpp"
 
 int main() {
-    std::string asd = "testPics/pic.pbm";
+    std::string asd = "testPics/cake.ppm";
     Image img(asd);
     
-    std::string qwe = "testPics/writeTest.pbm";
-    ImageEditor::getInstance().createBorder(img);
+    ImageEditor::getInstance().greenCake(img);
+    ImageEditor::getInstance().dither1(img);
+    
+    std::string qwe = "testPics/writeTest2.pbm";
     img.save(qwe);
+    
     std::cout<<"done\n";
     return 0;
 }

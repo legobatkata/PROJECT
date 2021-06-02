@@ -16,30 +16,94 @@ public:
         return instance;
     }
     
-    void createBorder(Image& img){
+    void greenCake(Image& img){
         
+        for(int i=0;i<img.height;i++)
+            for(int j=0; j<img.width; j++){
+                std::size_t color = img.arr[i][j].red*0.21 + img.arr[i][j].green*0.72 + img.arr[i][j].blue*0.07;
+                img.arr[i][j].red = color;
+                img.arr[i][j].green = color;
+                img.arr[i][j].blue = color;
+                
+                
+                //img.arr[i][j].red /= 100;
+                //img.arr[i][j].green /= 100;
+                //img.arr[i][j].blue /= 100;
+            }
         
-        for(int i=0; i<img.width; i++){
-            img.arr[0][i].red = 1;
-            img.arr[0][i].green = 1;
-            img.arr[0][i].blue = 1;
-        }
-        for(int i=0; i<img.width; i++){
-            img.arr[img.height-1][i].red = 1;
-            img.arr[img.height-1][i].green = 1;
-            img.arr[img.height-1][i].blue = 1;
-        }
-        for(int i=0; i<img.height; i++){
-            img.arr[i][0].red = 1;
-            img.arr[i][0].green = 1;
-            img.arr[i][0].blue = 1;
-        }
-        for(int i=0; i<img.height; i++){
-            img.arr[i][img.width-1].red = 1;
-            img.arr[i][img.width-1].green = 1;
-            img.arr[i][img.width-1].blue = 1;
-        }
+        img.maxValue /= 4;
+        for(int i=0;i<img.height;i++)
+            for(int j=0; j<img.width; j++){
+                img.arr[i][j].red /= 4;
+                img.arr[i][j].green /= 4;
+                img.arr[i][j].blue /= 4;
+            }
         
+        img.maxValue /= 4;
+        for(int i=0;i<img.height;i++)
+            for(int j=0; j<img.width; j++){
+                img.arr[i][j].red /= 4;
+                img.arr[i][j].green /= 4;
+                img.arr[i][j].blue /= 4;
+            }
+        
+        img.maxValue /= 2;
+        for(int i=0;i<img.height;i++)
+            for(int j=0; j<img.width; j++){
+                img.arr[i][j].red /= 2;
+                img.arr[i][j].green /= 2;
+                img.arr[i][j].blue /= 2;
+            }
+        
+        img.maxValue *= 2;
+        for(int i=0;i<img.height;i++)
+            for(int j=0; j<img.width; j++){
+                img.arr[i][j].red *= 2;
+                img.arr[i][j].green *= 2;
+                img.arr[i][j].blue *= 2;
+            }
+        
+    }
+    
+    
+    void dither1(Image& img){
+        for(int i=0;i<img.height;i++){
+            int errorR = 0;
+            int errorG = 0;
+            int errorB = 0;
+            for(int j=0; j<img.width; j++){
+                //std::cout<<"("<<img.arr[i][j].red<<", "<<img.arr[i][j].red<<", "<<img.arr[i][j].red<<") "<<error;
+                
+                // red
+                if((int)img.arr[i][j].red + errorR <= (int)img.maxValue/2){
+                    errorR += (int)img.arr[i][j].red;
+                    img.arr[i][j].red = 0;
+                }else{
+                    errorR += (int)img.arr[i][j].red - (int)img.maxValue;
+                    img.arr[i][j].red = img.maxValue;
+                }
+                
+                // green
+                if((int)img.arr[i][j].green + errorG <= (int)img.maxValue/2){
+                    errorG += (int)img.arr[i][j].green;
+                    img.arr[i][j].green = 0;
+                }else{
+                    errorG += (int)img.arr[i][j].green - (int)img.maxValue;
+                    img.arr[i][j].green = img.maxValue;
+                }
+                
+                // blue
+                if((int)img.arr[i][j].blue + errorB <= (int)img.maxValue/2){
+                    errorB += (int)img.arr[i][j].blue;
+                    img.arr[i][j].blue = 0;
+                }else{
+                    errorB += (int)img.arr[i][j].blue - (int)img.maxValue;
+                    img.arr[i][j].blue = img.maxValue;
+                }
+                //std::cout<<"    -----    ("<<img.arr[i][j].red<<", "<<img.arr[i][j].red<<", "<<img.arr[i][j].red<<") "<<error<<"\n";
+            }
+            //std::cout<<"-----------\n";
+        }
     }
     
 };
