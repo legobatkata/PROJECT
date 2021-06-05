@@ -163,8 +163,6 @@ void ImageEditor::betterFloyd(Image& img){
         3, 5, 1
     };
     
-    //penis(img, 1, 1, 2, 3, mat, 1, 16);
-    
     for(int i=0; i<img.height; i++){
         
         for(int j=0; j<img.width; j++){
@@ -172,10 +170,34 @@ void ImageEditor::betterFloyd(Image& img){
             penis<2, 3>(img, i, j, mat, 1, 16);
             
         }
-        
     }
-        
 }
+
+void ImageEditor::ditherJJN(Image& img){
+    int mat[3][5] = {
+        0, 0, 0, 7, 5,
+        3, 5, 7, 5, 3,
+        1, 3, 5, 3, 1
+    };
+    
+    for(int i=0; i<img.height; i++){
+        
+        for(int j=0; j<img.width; j++){
+            
+            penis<3, 5>(img, i, j, mat, 2, 48);
+            
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
 
 template<int mRows, int mCols>
 void ImageEditor::penis(Image& img, int curRow, int curCol, int matrix[mRows][mCols], int offset, int diviser){
@@ -210,5 +232,59 @@ void ImageEditor::penis(Image& img, int curRow, int curCol, int matrix[mRows][mC
         img.arr[curRow][curCol].blue = (int)img.maxValue;
     }
     */
+    
+    for(int i=0; i<mRows; i++){
+        for(int j=(i==0)?offset+1:0; j<mCols; j++){
+        
+            if((int)img.arr[curRow][curCol].red <= (int)img.maxValue/2){
+                if(curRow+i < img.height && curRow+i >= 0 && curCol+j - offset < img.width && curCol+j - offset >= 0){
+                    img.arr[curRow+i][curCol+j-offset].red = img.arr[curRow+i][curCol+j-offset].red + (img.arr[curRow][curCol].red / diviser * matrix[i][j]);
+                }
+            }else{
+                if(curRow+i < img.height && curRow+i >= 0 && curCol+j - offset < img.width && curCol+j - offset >= 0){
+                    img.arr[curRow+i][curCol+j-offset].red = img.arr[curRow+i][curCol+j-offset].red + (img.arr[curRow][curCol].red - (int)img.maxValue) / diviser * matrix[i][j];
+                }
+            }
+            
+            if((int)img.arr[curRow][curCol].green <= (int)img.maxValue/2){
+                if(curRow+i < img.height && curRow+i >= 0 && curCol+j - offset < img.width && curCol+j - offset >= 0){
+                    img.arr[curRow+i][curCol+j-offset].green = img.arr[curRow+i][curCol+j-offset].green + (img.arr[curRow][curCol].green / diviser * matrix[i][j]);
+                }
+            }else{
+                if(curRow+i < img.height && curRow+i >= 0 && curCol+j - offset < img.width && curCol+j - offset >= 0){
+                    img.arr[curRow+i][curCol+j-offset].green = img.arr[curRow+i][curCol+j-offset].green + (img.arr[curRow][curCol].green - (int)img.maxValue) / diviser * matrix[i][j];
+                }
+            }
+            
+            if((int)img.arr[curRow][curCol].blue <= (int)img.maxValue/2){
+                if(curRow+i < img.height && curRow+i >= 0 && curCol+j - offset < img.width && curCol+j - offset >= 0){
+                    img.arr[curRow+i][curCol+j-offset].blue = img.arr[curRow+i][curCol+j-offset].blue + (img.arr[curRow][curCol].blue / diviser * matrix[i][j]);
+                }
+            }else{
+                if(curRow+i < img.height && curRow+i >= 0 && curCol+j - offset < img.width && curCol+j - offset >= 0){
+                    img.arr[curRow+i][curCol+j-offset].blue = img.arr[curRow+i][curCol+j-offset].blue + (img.arr[curRow][curCol].blue - (int)img.maxValue) / diviser * matrix[i][j];
+                }
+            }
+        }
+    }
+    
+    if((int)img.arr[curRow][curCol].red <= (int)img.maxValue/2){
+        img.arr[curRow][curCol].red = 0;
+    } else {
+        img.arr[curRow][curCol].red = (int)img.maxValue;
+    }
+    
+    if((int)img.arr[curRow][curCol].green <= (int)img.maxValue/2){
+        img.arr[curRow][curCol].green = 0;
+    } else {
+        img.arr[curRow][curCol].green = (int)img.maxValue;
+    }
+    
+    if((int)img.arr[curRow][curCol].blue <= (int)img.maxValue/2){
+        img.arr[curRow][curCol].blue = 0;
+    } else {
+        img.arr[curRow][curCol].blue = (int)img.maxValue;
+    }
+    
     
 }

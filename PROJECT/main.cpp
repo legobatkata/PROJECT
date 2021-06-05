@@ -11,7 +11,8 @@ int main() {
     //ImageEditor::getInstance().greenCake(img);
     //ImageEditor::getInstance().ditherFloydStanberg(img);
     //ImageEditor::getInstance().test(img);
-    ImageEditor::getInstance().betterFloyd(img);
+    ImageEditor::getInstance().ditherJJN(img);
+    
     
     std::string qwe = "testPics/testdir.pbm";
     img.save(qwe);

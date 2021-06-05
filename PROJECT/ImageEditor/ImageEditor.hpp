@@ -21,9 +21,11 @@ public:
     }
     
     void greenCake(Image& img);
+    
     void dither1(Image& img);
     void ditherFloydStanberg(Image& img);
     void betterFloyd(Image& img);
+    void ditherJJN(Image& img);
     
     
 };
