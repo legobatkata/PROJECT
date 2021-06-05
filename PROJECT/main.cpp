@@ -8,10 +8,12 @@ int main() {
     std::string asd = "testPics/cake.ppm";
     Image img(asd);
     
-    ImageEditor::getInstance().greenCake(img);
-    ImageEditor::getInstance().dither1(img);
+    //ImageEditor::getInstance().greenCake(img);
+    //ImageEditor::getInstance().ditherFloydStanberg(img);
+    //ImageEditor::getInstance().test(img);
+    ImageEditor::getInstance().betterFloyd(img);
     
-    std::string qwe = "testPics/writeTest2.pbm";
+    std::string qwe = "testPics/testdir.pbm";
     img.save(qwe);
     
     std::cout<<"done\n";

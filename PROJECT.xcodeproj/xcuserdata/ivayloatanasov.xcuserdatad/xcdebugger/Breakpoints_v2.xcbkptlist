@@ -23,16 +23,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "F2C741FE-CCA7-404E-9D30-8A25F07B4E14"
+            uuid = "C9CAD857-6535-4FF9-B5C8-A18DA4914A61"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "PROJECT/ImageEditor/ImageEditor.hpp"
+            filePath = "PROJECT/ImageEditor/ImageEditor.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "78"
-            endingLineNumber = "78"
-            landmarkName = "dither1(img)"
+            startingLineNumber = "183"
+            endingLineNumber = "183"
+            landmarkName = "ImageEditor::penis(img, curRow, curCol, offset, diviser)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -3,11 +3,16 @@
 #include "../ImageHeader/ImageHeader.hpp"
 
 struct Pixel{
-    std::size_t red{};
-    std::size_t green{};
-    std::size_t blue{};
+    int red{};
+    int green{};
+    int blue{};
     Pixel() = default;
     Pixel(std::size_t r, std::size_t g, std::size_t b);
+    void setAll(int color){
+        red = color;
+        green = color;
+        blue = color;
+    }
 };
 
 class ImageData : public ImageHeader{
