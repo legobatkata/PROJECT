@@ -4,173 +4,89 @@
 void ImageEditor::greenCake(Image& img){
     for(int i=0;i<img.height;i++){
         for(int j=0; j<img.width; j++){
-            int color = img.arr[i][j].red*0.21 + img.arr[i][j].green*0.72 + img.arr[i][j].blue*0.07;
-            img.arr[i][j].red = color;
-            img.arr[i][j].green = color;
-            img.arr[i][j].blue = color;
+            int color = img.arr->at(i, j).red*0.21 + img.arr->at(i, j).green*0.72 + img.arr->at(i, j).blue*0.07;
+            img.arr->at(i, j).red = color;
+            img.arr->at(i, j).green = color;
+            img.arr->at(i, j).blue = color;
         }
     }
 }
 
-
-
-void ImageEditor::dither1(Image& img){
-    for(int i=0;i<img.height;i++){
-        int errorR = 0;
-        int errorG = 0;
-        int errorB = 0;
-        for(int j=0; j<img.width; j++){
-            
-            // red
-            if((int)img.arr[i][j].red + errorR <= (int)img.maxValue/2){
-                errorR += (int)img.arr[i][j].red;
-                img.arr[i][j].red = 0;
-            }else{
-                errorR += (int)img.arr[i][j].red - (int)img.maxValue;
-                img.arr[i][j].red = (int)img.maxValue;
+void ImageEditor::dither1d(Image& img){
+    int mat[1][2] = {
+        0, 1
+    };
+    
+    Matrix<Pixel>* newArr = new Matrix<Pixel>(*img.arr);
+    
+    
+    try{
+        for(int i=0; i<img.height; i++)
+            for(int j=0; j<img.width; j++){
+                diffusePixelsByMatrix<1, 2>(*newArr, i, j, (int)img.maxValue, mat, 0, 1);
+                evaluatePixelAt(*newArr, i, j, (int)img.maxValue);
             }
-            
-            // green
-            if((int)img.arr[i][j].green + errorG <= (int)img.maxValue/2){
-                errorG += (int)img.arr[i][j].green;
-                img.arr[i][j].green = 0;
-            }else{
-                errorG += (int)img.arr[i][j].green - (int)img.maxValue;
-                img.arr[i][j].green = (int)img.maxValue;
-            }
-            
-            // blue
-            if((int)img.arr[i][j].blue + errorB <= (int)img.maxValue/2){
-                errorB += (int)img.arr[i][j].blue;
-                img.arr[i][j].blue = 0;
-            }else{
-                errorB += (int)img.arr[i][j].blue - (int)img.maxValue;
-                img.arr[i][j].blue = (int)img.maxValue;
-            }
-        }
+    } catch(const std::exception& e){
+        throw std::invalid_argument("error while editing image");
     }
+    
+    delete img.arr;
+    img.arr = newArr;
+    
 }
 
-
-
-void ImageEditor::ditherFloydStanberg(Image& img){
-    for(int i=0;i<img.height;i++){
-        for(int j=0; j<img.width; j++){
-            
-            // red
-            if((int)img.arr[i][j].red <= (int)img.maxValue/2){
-                if(j+1<img.width){
-                    img.arr[i][j+1].red = (img.arr[i][j+1].red + (img.arr[i][j].red / 16 * 7));
-                }
-                if(i+1<img.height){
-                    img.arr[i+1][j].red = (img.arr[i+1][j].red + (img.arr[i][j].red / 16 * 5));
-                }
-                if(i+1<img.height && j+1<img.width){
-                    img.arr[i+1][j+1].red = (img.arr[i+1][j+1].red + (img.arr[i][j].red / 16));
-                }
-                if(j-1>0 && i+1<img.height) {
-                    img.arr[i+1][j-1].red = (img.arr[i+1][j-1].red + (img.arr[i][j].red / 16 * 3));
-                }
-                img.arr[i][j].red = 0;
-            }else{
-                if(j+1<img.width) {
-                    img.arr[i][j+1].red = (img.arr[i][j+1].red + (img.arr[i][j].red - (int)img.maxValue ) / 16 * 7);
-                }
-                if(i+1<img.height) {
-                    img.arr[i+1][j].red = (img.arr[i+1][j].red + (img.arr[i][j].red - (int)img.maxValue ) / 16 * 5);
-                }
-                if(i+1<img.height && j+1<img.width) {
-                    img.arr[i+1][j+1].red = (img.arr[i+1][j+1].red + (img.arr[i][j].red - (int)img.maxValue ) / 16);
-                }
-                if(j-1>0 && i+1<img.height) {
-                    img.arr[i+1][j-1].red = (img.arr[i+1][j-1].red + (img.arr[i][j].red - (int)img.maxValue ) / 16 * 3);
-                }
-                img.arr[i][j].red = (int)img.maxValue;
-            }
-            
-            
-            // green
-            if((int)img.arr[i][j].green <= (int)img.maxValue/2){
-                if(j+1<img.width){
-                    img.arr[i][j+1].green = (img.arr[i][j+1].green + (img.arr[i][j].green / 16 * 7));
-                }
-                if(i+1<img.height){
-                    img.arr[i+1][j].green = (img.arr[i+1][j].green + (img.arr[i][j].green / 16 * 5));
-                }
-                if(i+1<img.height && j+1<img.width){
-                    img.arr[i+1][j+1].green = (img.arr[i+1][j+1].green + (img.arr[i][j].green / 16));
-                }
-                if(j-1>0 && i+1<img.height) {
-                    img.arr[i+1][j-1].green = (img.arr[i+1][j-1].green + (img.arr[i][j].green / 16 * 3));
-                }
-                img.arr[i][j].green = 0;
-            }else{
-                if(j+1<img.width) {
-                    img.arr[i][j+1].green = (img.arr[i][j+1].green + (img.arr[i][j].green - (int)img.maxValue ) / 16 * 7);
-                }
-                if(i+1<img.height) {
-                    img.arr[i+1][j].green = (img.arr[i+1][j].green + (img.arr[i][j].green - (int)img.maxValue ) / 16 * 5);
-                }
-                if(i+1<img.height && j+1<img.width) {
-                    img.arr[i+1][j+1].green = (img.arr[i+1][j+1].green + (img.arr[i][j].green - (int)img.maxValue ) / 16);
-                }
-                if(j-1>0 && i+1<img.height) {
-                    img.arr[i+1][j-1].green = (img.arr[i+1][j-1].green + (img.arr[i][j].green - (int)img.maxValue ) / 16 * 3);
-                }
-                img.arr[i][j].green = (int)img.maxValue;
-            }
-            
-            
-            // blue
-            if((int)img.arr[i][j].blue <= (int)img.maxValue/2){
-                if(j+1<img.width){
-                    img.arr[i][j+1].blue = (img.arr[i][j+1].blue + (img.arr[i][j].blue / 16 * 7));
-                }
-                if(i+1<img.height){
-                    img.arr[i+1][j].blue = (img.arr[i+1][j].blue + (img.arr[i][j].blue / 16 * 5));
-                }
-                if(i+1<img.height && j+1<img.width){
-                    img.arr[i+1][j+1].blue = (img.arr[i+1][j+1].blue + (img.arr[i][j].blue / 16));
-                }
-                if(j-1>0 && i+1<img.height) {
-                    img.arr[i+1][j-1].blue = (img.arr[i+1][j-1].blue + (img.arr[i][j].blue / 16 * 3));
-                }
-                img.arr[i][j].blue = 0;
-            }else{
-                if(j+1<img.width) {
-                    img.arr[i][j+1].blue = (img.arr[i][j+1].blue + (img.arr[i][j].blue - (int)img.maxValue ) / 16 * 7);
-                }
-                if(i+1<img.height) {
-                    img.arr[i+1][j].blue = (img.arr[i+1][j].blue + (img.arr[i][j].blue - (int)img.maxValue ) / 16 * 5);
-                }
-                if(i+1<img.height && j+1<img.width) {
-                    img.arr[i+1][j+1].blue = (img.arr[i+1][j+1].blue + (img.arr[i][j].blue - (int)img.maxValue ) / 16);
-                }
-                if(j-1>0 && i+1<img.height) {
-                    img.arr[i+1][j-1].blue = (img.arr[i+1][j-1].blue + (img.arr[i][j].blue - (int)img.maxValue ) / 16 * 3);
-                }
-                img.arr[i][j].blue = (int)img.maxValue;
-            }
-         
-        }
-    }
-}
-
-void ImageEditor::betterFloyd(Image& img){
+void ImageEditor::ditherFloyd(Image& img){
      
     int mat[2][3] = {
         0, 0, 7,
         3, 5, 1
     };
     
-    for(int i=0; i<img.height; i++){
-        
-        for(int j=0; j<img.width; j++){
+    Matrix<Pixel>* newArr = new Matrix<Pixel>(*img.arr);
+    
+    try{
+        for(int i=0; i<img.height; i++){
             
-            penis<2, 3>(img, i, j, mat, 1, 16);
-            
+            for(int j=0; j<img.width; j++){
+                
+                diffusePixelsByMatrix<2, 3>(*newArr, i, j, (int)img.maxValue, mat, 1, 16);
+                evaluatePixelAt(*newArr, i, j, (int)img.maxValue);
+                
+            }
         }
+    } catch(const std::exception& e){
+        throw std::invalid_argument("error while editing image");
     }
+
+    delete img.arr;
+    img.arr = newArr;
+}
+
+
+void ImageEditor::ditherFakeFloyd(Image& img){
+    int mat[2][2] = {
+        0, 3,
+        3, 2,
+    };
+    
+    Matrix<Pixel>* newArr = new Matrix<Pixel>(*img.arr);
+    
+    try{
+        for(int i=0; i<img.height; i++){
+            
+            for(int j=0; j<img.width; j++){
+                
+                diffusePixelsByMatrix<2, 2>(*newArr, i, j, (int)img.maxValue, mat, 0, 8);
+                evaluatePixelAt(*newArr, i, j, (int)img.maxValue);
+                
+            }
+        }
+    } catch(const std::exception& e){
+        throw std::invalid_argument("error while editing image");
+    }
+
+    delete img.arr;
+    img.arr = newArr;
 }
 
 void ImageEditor::ditherJJN(Image& img){
@@ -180,14 +96,254 @@ void ImageEditor::ditherJJN(Image& img){
         1, 3, 5, 3, 1
     };
     
-    for(int i=0; i<img.height; i++){
-        
-        for(int j=0; j<img.width; j++){
+    
+    Matrix<Pixel>* newArr = new Matrix<Pixel>(*img.arr);
+    
+    try{
+        for(int i=0; i<img.height; i++){
             
-            penis<3, 5>(img, i, j, mat, 2, 48);
-            
+            for(int j=0; j<img.width; j++){
+                
+                diffusePixelsByMatrix<3, 5>(*newArr, i, j, (int)img.maxValue, mat, 2, 48);
+                evaluatePixelAt(*newArr, i, j, (int)img.maxValue);
+                
+            }
         }
+    } catch(const std::exception& e){
+        throw std::invalid_argument("error while editing image");
     }
+
+    delete img.arr;
+    img.arr = newArr;
+}
+
+
+void ImageEditor::ditherStucki(Image& img){
+    int mat[3][5] = {
+        0, 0, 0, 8, 4,
+        2, 4, 8, 4, 2,
+        1, 2, 4, 2, 1
+    };
+    
+    Matrix<Pixel>* newArr = new Matrix<Pixel>(*img.arr);
+    
+    try{
+        for(int i=0; i<img.height; i++){
+            
+            for(int j=0; j<img.width; j++){
+                
+                diffusePixelsByMatrix<3, 5>(*newArr, i, j, (int)img.maxValue, mat, 2, 42);
+                evaluatePixelAt(*newArr, i, j, (int)img.maxValue);
+                
+            }
+        }
+    } catch(const std::exception& e){
+        throw std::invalid_argument("error while editing image");
+    }
+
+    delete img.arr;
+    img.arr = newArr;
+}
+
+
+void ImageEditor::ditherAtkinson(Image& img){
+    int mat[3][4] = {
+        0, 0, 1, 1,
+        1, 1, 1, 0,
+        0, 1, 0, 0
+    };
+    
+    Matrix<Pixel>* newArr = new Matrix<Pixel>(*img.arr);
+    
+    try{
+        for(int i=0; i<img.height; i++){
+            
+            for(int j=0; j<img.width; j++){
+                
+                diffusePixelsByMatrix<3, 4>(*newArr, i, j, (int)img.maxValue, mat, 1, 8);
+                evaluatePixelAt(*newArr, i, j, (int)img.maxValue);
+                
+            }
+        }
+    } catch(const std::exception& e){
+        throw std::invalid_argument("error while editing image");
+    }
+
+    delete img.arr;
+    img.arr = newArr;
+    
+}
+
+
+void ImageEditor::ditherBurkes(Image& img){
+    int mat[2][5] = {
+        0, 0, 0, 8, 4,
+        2, 4, 8, 4, 2
+    };
+    
+    Matrix<Pixel>* newArr = new Matrix<Pixel>(*img.arr);
+    
+    try{
+        for(int i=0; i<img.height; i++){
+            
+            for(int j=0; j<img.width; j++){
+                
+                diffusePixelsByMatrix<2, 5>(*newArr, i, j, (int)img.maxValue, mat, 2, 32);
+                evaluatePixelAt(*newArr, i, j, (int)img.maxValue);
+                
+            }
+        }
+    } catch(const std::exception& e){
+        throw std::invalid_argument("error while editing image");
+    }
+
+    delete img.arr;
+    img.arr = newArr;
+}
+
+
+
+void ImageEditor::ditherSierra(Image& img){
+    int mat[3][5] = {
+        0, 0, 0, 5, 3,
+        2, 4, 5, 4, 2,
+        0, 2, 3, 2, 0
+    };
+    
+    Matrix<Pixel>* newArr = new Matrix<Pixel>(*img.arr);
+    
+    try{
+        for(int i=0; i<img.height; i++){
+            
+            for(int j=0; j<img.width; j++){
+                
+                diffusePixelsByMatrix<3, 5>(*newArr, i, j, (int)img.maxValue, mat, 2, 32);
+                evaluatePixelAt(*newArr, i, j, (int)img.maxValue);
+                
+            }
+        }
+    } catch(const std::exception& e){
+        throw std::invalid_argument("error while editing image");
+    }
+
+    delete img.arr;
+    img.arr = newArr;
+}
+
+
+void ImageEditor::ditherSierraTwoRow(Image& img){
+    int mat[2][5] = {
+        0, 0, 0, 4, 3,
+        1, 2, 3, 2, 1,
+    };
+    
+    Matrix<Pixel>* newArr = new Matrix<Pixel>(*img.arr);
+    
+    try{
+        for(int i=0; i<img.height; i++){
+            
+            for(int j=0; j<img.width; j++){
+                
+                diffusePixelsByMatrix<2, 5>(*newArr, i, j, (int)img.maxValue, mat, 2, 16);
+                evaluatePixelAt(*newArr, i, j, (int)img.maxValue);
+                
+            }
+        }
+    } catch(const std::exception& e){
+        throw std::invalid_argument("error while editing image");
+    }
+
+    delete img.arr;
+    img.arr = newArr;
+}
+
+
+void ImageEditor::ditherSierraLite(Image& img){
+    int mat[2][3] = {
+        0, 0, 2,
+        1, 1, 0
+    };
+    
+    Matrix<Pixel>* newArr = new Matrix<Pixel>(*img.arr);
+    
+    try{
+        for(int i=0; i<img.height; i++){
+            
+            for(int j=0; j<img.width; j++){
+                
+                diffusePixelsByMatrix<2, 3>(*newArr, i, j, (int)img.maxValue, mat, 1, 4);
+                evaluatePixelAt(*newArr, i, j, (int)img.maxValue);
+                
+            }
+        }
+    } catch(const std::exception& e){
+        throw std::invalid_argument("error while editing image");
+    }
+
+    delete img.arr;
+    img.arr = newArr;
+}
+
+void ImageEditor::dither4x4(Image& img){
+    int mat[4][4] = {
+        0, 8, 2, 10,
+        12, 4, 14, 6,
+        3, 11, 1, 9,
+        15, 7, 13, 5
+    };
+    
+    Matrix<Pixel>* newArr = new Matrix<Pixel>(*img.arr);
+    
+    try{
+        for(int i=0; i<img.height; i++){
+            
+            for(int j=0; j<img.width; j++){
+                
+                if(i%4 == 0  && j%4 == 0){
+                    diffuseInBlock<4, 4>(*newArr, i, j, (int)img.maxValue, mat, -1, 16);
+                }
+                
+            }
+        }
+    } catch(const std::exception& e){
+        throw std::invalid_argument("error while editing image");
+    }
+
+    delete img.arr;
+    img.arr = newArr;
+}
+
+void ImageEditor::dither8x8(Image& img){
+    int mat[8][8] = {
+         0, 32,  8, 40,  2, 34, 10, 42,
+        48, 16, 56, 24, 50, 18, 58, 26,
+        12, 44,  4, 36, 14, 46,  6, 38,
+        60, 28, 52, 20, 62, 30, 54, 22,
+         3, 35, 11, 43,  1, 33,  9, 41,
+        51, 19, 59, 27, 49, 17, 57, 25,
+        15, 47,  7, 39, 13, 45,  5, 37,
+        63, 31, 55, 23, 61, 29, 53, 21
+    };
+    
+    Matrix<Pixel>* newArr = new Matrix<Pixel>(*img.arr);
+    
+    try{
+        for(int i=0; i<img.height; i++){
+            
+            for(int j=0; j<img.width; j++){
+                
+                if(i%8 == 0  && j%8 == 0){
+                    diffuseInBlock<8, 8>(*newArr, i, j, (int)img.maxValue, mat, -1, 64);
+                }
+                
+            }
+        }
+    } catch(const std::exception& e){
+        throw std::invalid_argument("error while editing image");
+    }
+
+    delete img.arr;
+    img.arr = newArr;
 }
 
 
@@ -195,96 +351,90 @@ void ImageEditor::ditherJJN(Image& img){
 
 
 
-
-
-
-
 template<int mRows, int mCols>
-void ImageEditor::penis(Image& img, int curRow, int curCol, int matrix[mRows][mCols], int offset, int diviser){
-    
-    /*for(int i=0; i<mRows; i++){
-        for(int j=(i==0)?offset+1:0; j<mCols; j++){
-        
-            if((int)img.arr[curRow][curCol].red <= (int)img.maxValue/2){
-                if(curRow+i < img.height && curRow+i >= 0 && curCol+j - offset < img.width && curCol+j - offset >= 0){
-                    img.arr[curRow+i][curCol+j-offset].red = img.arr[curRow+i][curCol+j-offset].red + (img.arr[curRow][curCol].red / diviser * matrix[i][j]);
-                    img.arr[curRow+i][curCol+j-offset].green = img.arr[curRow+i][curCol+j-offset].green + (img.arr[curRow][curCol].green / diviser * matrix[i][j]);
-                    img.arr[curRow+i][curCol+j-offset].blue = img.arr[curRow+i][curCol+j-offset].blue + (img.arr[curRow][curCol].blue / diviser * matrix[i][j]);
-                }
-            }else{
-                if(curRow+i < img.height && curRow+i >= 0 && curCol+j - offset < img.width && curCol+j - offset >= 0){
-                    img.arr[curRow+i][curCol+j-offset].red = img.arr[curRow+i][curCol+j-offset].red + (img.arr[curRow][curCol].red - (int)img.maxValue) / diviser * matrix[i][j];
-                    img.arr[curRow+i][curCol+j-offset].green = img.arr[curRow+i][curCol+j-offset].green + (img.arr[curRow][curCol].green - (int)img.maxValue) / diviser * matrix[i][j];
-                    img.arr[curRow+i][curCol+j-offset].blue = img.arr[curRow+i][curCol+j-offset].blue + (img.arr[curRow][curCol].blue - (int)img.maxValue) / diviser * matrix[i][j];
-                }
-            }
-        }
-        
-    }
-    
-    if((int)img.arr[curRow][curCol].red <= (int)img.maxValue/2){
-        img.arr[curRow][curCol].red = 0;
-        img.arr[curRow][curCol].green = 0;
-        img.arr[curRow][curCol].blue = 0;
-    } else {
-        img.arr[curRow][curCol].red = (int)img.maxValue;
-        img.arr[curRow][curCol].green = (int)img.maxValue;
-        img.arr[curRow][curCol].blue = (int)img.maxValue;
-    }
-    */
+void ImageEditor::diffusePixelsByMatrix(Matrix<Pixel>& arr, int curRow, int curCol, int maxValue, int matrix[mRows][mCols], int offset, int diviser){
     
     for(int i=0; i<mRows; i++){
         for(int j=(i==0)?offset+1:0; j<mCols; j++){
         
-            if((int)img.arr[curRow][curCol].red <= (int)img.maxValue/2){
-                if(curRow+i < img.height && curRow+i >= 0 && curCol+j - offset < img.width && curCol+j - offset >= 0){
-                    img.arr[curRow+i][curCol+j-offset].red = img.arr[curRow+i][curCol+j-offset].red + (img.arr[curRow][curCol].red / diviser * matrix[i][j]);
+            
+            if(curRow+i < arr.getRows() && curRow+i >= 0 && curCol+j - offset < arr.getCols() && curCol+j - offset >= 0){
+                if((int)arr.at(curRow, curCol).red <= maxValue/2){
+                        arr.at(curRow+i, curCol+j-offset).red = arr.at(curRow+i, curCol+j-offset).red + (int)((double)arr.at(curRow, curCol).red / diviser * matrix[i][j]);
+                }else{
+                        arr.at(curRow+i, curCol+j-offset).red = arr.at(curRow+i, curCol+j-offset).red + (int)(((double)arr.at(curRow, curCol).red - (double)maxValue) / diviser * matrix[i][j]);
                 }
-            }else{
-                if(curRow+i < img.height && curRow+i >= 0 && curCol+j - offset < img.width && curCol+j - offset >= 0){
-                    img.arr[curRow+i][curCol+j-offset].red = img.arr[curRow+i][curCol+j-offset].red + (img.arr[curRow][curCol].red - (int)img.maxValue) / diviser * matrix[i][j];
+                
+                if((int)arr.at(curRow, curCol).green <= maxValue/2){
+                        arr.at(curRow+i, curCol+j-offset).green = arr.at(curRow+i, curCol+j-offset).green + (int)((double)arr.at(curRow, curCol).green / diviser * matrix[i][j]);
+                }else{
+                        arr.at(curRow+i, curCol+j-offset).green = arr.at(curRow+i, curCol+j-offset).green + (int)(((double)arr.at(curRow, curCol).green - (double)maxValue) / diviser * matrix[i][j]);
                 }
+                
+                if((int)arr.at(curRow, curCol).blue <= maxValue/2){
+                        arr.at(curRow+i, curCol+j-offset).blue = arr.at(curRow+i, curCol+j-offset).blue + (int)((double)arr.at(curRow, curCol).blue / diviser * matrix[i][j]);
+                }else{
+                        arr.at(curRow+i, curCol+j-offset).blue = arr.at(curRow+i, curCol+j-offset).blue + (int)(((double)arr.at(curRow, curCol).blue - (double)maxValue) / diviser * matrix[i][j]);
+                }
+                /*
+                if((int)img.arr->at(curRow, curCol).green <= (int)img.maxValue/2){
+                        img.arr->at(curRow+i, curCol+j-offset).green = img.arr->at(curRow+i, curCol+j-offset).green + (int)((double)img.arr->at(curRow, curCol).green / diviser * matrix[i][j]);
+                }else{
+                        img.arr->at(curRow+i, curCol+j-offset).green = img.arr->at(curRow+i, curCol+j-offset).green + (int)(((double)img.arr->at(curRow, curCol).green - (double)img.maxValue) / diviser * matrix[i][j]);
+                }
+                
+                if((int)img.arr->at(curRow, curCol).blue <= (int)img.maxValue/2){
+                        img.arr->at(curRow+i, curCol+j-offset).blue = img.arr->at(curRow+i, curCol+j-offset).blue + (int)((double)img.arr->at(curRow, curCol).blue / diviser * matrix[i][j]);
+                }else{
+                        img.arr->at(curRow+i, curCol+j-offset).blue = img.arr->at(curRow+i, curCol+j-offset).blue + (int)(((double)img.arr->at(curRow, curCol).blue - (double)img.maxValue) / diviser * matrix[i][j]);
+                }*/
             }
             
-            if((int)img.arr[curRow][curCol].green <= (int)img.maxValue/2){
-                if(curRow+i < img.height && curRow+i >= 0 && curCol+j - offset < img.width && curCol+j - offset >= 0){
-                    img.arr[curRow+i][curCol+j-offset].green = img.arr[curRow+i][curCol+j-offset].green + (img.arr[curRow][curCol].green / diviser * matrix[i][j]);
-                }
-            }else{
-                if(curRow+i < img.height && curRow+i >= 0 && curCol+j - offset < img.width && curCol+j - offset >= 0){
-                    img.arr[curRow+i][curCol+j-offset].green = img.arr[curRow+i][curCol+j-offset].green + (img.arr[curRow][curCol].green - (int)img.maxValue) / diviser * matrix[i][j];
-                }
-            }
-            
-            if((int)img.arr[curRow][curCol].blue <= (int)img.maxValue/2){
-                if(curRow+i < img.height && curRow+i >= 0 && curCol+j - offset < img.width && curCol+j - offset >= 0){
-                    img.arr[curRow+i][curCol+j-offset].blue = img.arr[curRow+i][curCol+j-offset].blue + (img.arr[curRow][curCol].blue / diviser * matrix[i][j]);
-                }
-            }else{
-                if(curRow+i < img.height && curRow+i >= 0 && curCol+j - offset < img.width && curCol+j - offset >= 0){
-                    img.arr[curRow+i][curCol+j-offset].blue = img.arr[curRow+i][curCol+j-offset].blue + (img.arr[curRow][curCol].blue - (int)img.maxValue) / diviser * matrix[i][j];
-                }
+        }
+    }
+    
+    
+}
+
+
+
+template<int mRows, int mCols>
+void ImageEditor::diffuseInBlock(Matrix<Pixel>& arr, int curRow, int curCol, int maxValue, int matrix[mRows][mCols], int offset, int diviser){
+    
+    for(int i=0; i<mRows; i++){
+        for(int j=(i==0)?offset+1:0; j<mCols; j++){
+            if(curRow+i < arr.getRows() && curRow+i >= 0 && curCol+j - offset < arr.getCols() && curCol+j - offset >= 0){
+                
+                
+                arr.at(curRow+i, curCol+j-offset).red = arr.at(curRow+i, curCol+j-offset).red + (int)((double)maxValue/1.2*((double)matrix[i][j]/(double)diviser - 0.5));
+                arr.at(curRow+i, curCol+j-offset).green = arr.at(curRow+i, curCol+j-offset).green + (int)((double)maxValue/1.2*((double)matrix[i][j]/(double)diviser - 0.5));
+                arr.at(curRow+i, curCol+j-offset).blue = arr.at(curRow+i, curCol+j-offset).blue + (int)((double)maxValue/1.2*((double)matrix[i][j]/(double)diviser - 0.5));
+                
+                evaluatePixelAt(arr, curRow+i, curCol+j-offset, maxValue);
             }
         }
     }
     
-    if((int)img.arr[curRow][curCol].red <= (int)img.maxValue/2){
-        img.arr[curRow][curCol].red = 0;
+    
+}
+
+
+void ImageEditor::evaluatePixelAt(Matrix<Pixel>& arr, int curRow, int curCol, int maxValue){
+    if((int)arr.at(curRow, curCol).red <= (int)maxValue/2){
+        arr.at(curRow, curCol).red = 0;
     } else {
-        img.arr[curRow][curCol].red = (int)img.maxValue;
+        arr.at(curRow, curCol).red = (int)maxValue;
     }
     
-    if((int)img.arr[curRow][curCol].green <= (int)img.maxValue/2){
-        img.arr[curRow][curCol].green = 0;
+    if((int)arr.at(curRow, curCol).green <= (int)maxValue/2){
+        arr.at(curRow, curCol).green = 0;
     } else {
-        img.arr[curRow][curCol].green = (int)img.maxValue;
+        arr.at(curRow, curCol).green = (int)maxValue;
     }
     
-    if((int)img.arr[curRow][curCol].blue <= (int)img.maxValue/2){
-        img.arr[curRow][curCol].blue = 0;
+    if((int)arr.at(curRow, curCol).blue <= (int)maxValue/2){
+        arr.at(curRow, curCol).blue = 0;
     } else {
-        img.arr[curRow][curCol].blue = (int)img.maxValue;
+        arr.at(curRow, curCol).blue = (int)maxValue;
     }
-    
-    
 }

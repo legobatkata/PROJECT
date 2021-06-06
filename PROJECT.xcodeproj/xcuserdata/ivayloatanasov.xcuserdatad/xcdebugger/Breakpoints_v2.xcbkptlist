@@ -23,17 +23,65 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "C9CAD857-6535-4FF9-B5C8-A18DA4914A61"
+            uuid = "42D574BC-1D4F-4AF7-A4F3-6CB1DACACC1A"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "PROJECT/ImageEditor/ImageEditor.cpp"
+            filePath = "PROJECT/Matrix/Matrix.hpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "205"
-            endingLineNumber = "205"
-            landmarkName = "ImageEditor::penis(img, curRow, curCol, offset, diviser)"
-            landmarkType = "7">
+            startingLineNumber = "20"
+            endingLineNumber = "20"
+            landmarkName = "Matrix"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  uuid = "42D574BC-1D4F-4AF7-A4F3-6CB1DACACC1A - 972cfe289290c2fc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Matrix&lt;int&gt;::releaseByRows(int)"
+                  moduleName = "PROJECT_TESTS"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ivayloatanasov/My%20Files/uni/oop/PROJECT/PROJECT/Matrix/Matrix.hpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "31"
+                  endingLineNumber = "31"
+                  offsetFromSymbolStart = "19">
+               </Location>
+               <Location
+                  uuid = "42D574BC-1D4F-4AF7-A4F3-6CB1DACACC1A - 811a4d43e5d60177"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Matrix&lt;Pixel&gt;::releaseByRows(int)"
+                  moduleName = "PROJECT_TESTS"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ivayloatanasov/My%20Files/uni/oop/PROJECT/PROJECT/Matrix/Matrix.hpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "31"
+                  endingLineNumber = "31"
+                  offsetFromSymbolStart = "19">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AE227C2B-E683-4156-8BD4-A2DC7CAA1C72"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PROJECT/Matrix/Matrix.hpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "62"
+            endingLineNumber = "62"
+            landmarkName = "copy(newM)"
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
