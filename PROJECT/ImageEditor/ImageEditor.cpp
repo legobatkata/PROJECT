@@ -1,6 +1,83 @@
 #include "ImageEditor.hpp"
 
 
+
+void ImageEditor::resize(Image& img, int newHeight, int newWidth){
+    
+    Matrix<Pixel>* newArr = new Matrix<Pixel>(newHeight, newWidth);
+    
+    for(int i=0;i<newHeight; i++){
+        
+        for(int j=0; j<newWidth; j++){
+            
+            int srcH = (int)round((double)i / (double)newHeight * (double)img.height);
+            int srcW = (int)round((double)j / (double)newWidth * (double)img.width);
+            
+            if(srcH > img.height-1) srcH = img.height-1;
+            if(srcW > img.width-1) srcW = img.width-1;
+            
+            newArr->at(i, j).red = img.arr->at(srcH, srcW).red;
+            newArr->at(i, j).green = img.arr->at(srcH, srcW).green;
+            newArr->at(i, j).blue = img.arr->at(srcH, srcW).blue;
+            
+        }
+        
+    }
+    
+    delete img.arr;
+    img.arr = newArr;
+    img.height = newHeight;
+    img.width = newWidth;
+    
+}
+void ImageEditor::resize(Image& img, double percentage){
+    resize(img, (int)((double)img.height * percentage/100), (int)((double)img.width * percentage/100));
+}
+
+
+void ImageEditor::crop(Image& img, int lx, int ly, int rx, int ry){
+    
+    int trueLy = std::min(ly, ry);
+    int trueLx = std::min(lx, rx);
+    int trueRy = std::max(ly, ry);
+    int trueRx = std::max(lx, rx);
+    
+    if(trueLx >= img.width || trueLy >= img.height){
+        // maybe should throw exception here
+        std::cout<<"invalid cropping coordinates\n";
+        return;
+    }
+    
+    int endX = std::min(trueRx, img.width);
+    int endY = std::min(trueRy, img.height);
+    
+    int newHeight = endY - trueLy;
+    int newWidth = endX - trueLx;
+    
+    Matrix<Pixel> *newArr = new Matrix<Pixel>(newHeight, newWidth);
+    
+    
+    for(int i=0; i<newHeight; i++){
+        for(int j=0; j<newWidth; j++){
+            if(i+trueLy < img.height && i+trueLy>=0 && j+trueLx<img.width && j+trueLx>=0)
+                newArr->at(i, j) = img.arr->at(i+trueLy, j+trueLx);
+            else {
+                // maybe should throw exception here
+                std::cout<<"error while croppinng\n";
+                delete newArr;
+                return;
+            }
+        }
+    }
+    
+    delete img.arr;
+    img.arr = newArr;
+    img.height = newHeight;
+    img.width = newWidth;
+}
+
+
+
 void ImageEditor::greenCake(Image& img){
     for(int i=0;i<img.height;i++){
         for(int j=0; j<img.width; j++){
@@ -11,6 +88,7 @@ void ImageEditor::greenCake(Image& img){
         }
     }
 }
+
 
 void ImageEditor::dither1d(Image& img){
     int mat[1][2] = {

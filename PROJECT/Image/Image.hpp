@@ -12,11 +12,8 @@ struct Pixel{
     int blue{};
     Pixel() = default;
     Pixel(int r, int g, int b);
-    void setAll(int color){
-        red = color;
-        green = color;
-        blue = color;
-    }
+    void setAll(int color);
+    Pixel(std::string hexStr);
 };
 
 enum ImgType{
@@ -50,9 +47,8 @@ private:
 public:
     Image() = delete;
     ~Image();
-    //Image(const Image& img);
     Image(std::string& path);
-    //Image(ImageHeader& h);
+    Image(int width, int height, std::string hexCode);
     
     
     void save(std::string& path);

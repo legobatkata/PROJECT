@@ -2,6 +2,7 @@
 #define ImageEditor_hpp
 
 #include <iostream>
+#include <cmath>
 #include "../Image/Image.hpp"
 
 class ImageEditor{
@@ -26,7 +27,9 @@ public:
     }
     
     void greenCake(Image& img);
-    void dither1(Image& img);
+    void resize(Image& img, int newHeight, int newWidth);
+    void resize(Image& img, double percentage);
+    void crop(Image& img, int lx, int ly, int rx, int ry);
     
     void dither1d(Image& img);
     void ditherFloyd(Image& img);
@@ -40,6 +43,7 @@ public:
     void ditherSierraLite(Image& img);
     void dither4x4(Image& img);
     void dither8x8(Image& img);
+    
     
     
 };

@@ -20,6 +20,19 @@ const unsigned int strToInt(const std::string& str){
 }
 
 
+unsigned int hexToDec(std::string hexStr){
+    unsigned int res = 0;
+    for (int i = 0; i < hexStr.length(); ++i){
+        if (hexStr[i] >= 48 && hexStr[i] <= 57)
+            res += (hexStr[i] - 48) * pow(16, hexStr.length() - i - 1);
+        else if (hexStr[i] >= 65 && hexStr[i] <= 70)
+            res += (hexStr[i] - 55) * pow(16, hexStr.length() - i - 1);
+        else if (hexStr[i] >= 97 && hexStr[i] <= 102)
+            res += (hexStr[i] - 87) * pow(16, hexStr.length() - i - 1);
+    }
+    return res;
+}
+
 // TODO: move these to their own file later
 
 
@@ -65,5 +78,23 @@ std::string getNextParam(std::ifstream& fstr){
         return bufferStr;
     }
     return "\0";
+    
+}
+
+
+
+uint8_t getNextByte(std::ifstream& fstr){
+    
+    if(!fstr) return 0;
+    
+    try{
+        uint8_t buf = 0;
+        fstr.read((char*)&buf, sizeof(buf));
+        return buf;
+    } catch(const std::exception& e){
+        std::cout<<e.what()<<"\n";
+    }
+    return 0;
+    
     
 }
