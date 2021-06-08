@@ -6,22 +6,25 @@ void ImageEditor::resize(Image& img, int newHeight, int newWidth){
     
     Matrix<Pixel>* newArr = new Matrix<Pixel>(newHeight, newWidth);
     
-    for(int i=0;i<newHeight; i++){
-        
-        for(int j=0; j<newWidth; j++){
-            
-            int srcH = (int)round((double)i / (double)newHeight * (double)img.height);
-            int srcW = (int)round((double)j / (double)newWidth * (double)img.width);
-            
-            if(srcH > img.height-1) srcH = img.height-1;
-            if(srcW > img.width-1) srcW = img.width-1;
-            
-            newArr->at(i, j).red = img.arr->at(srcH, srcW).red;
-            newArr->at(i, j).green = img.arr->at(srcH, srcW).green;
-            newArr->at(i, j).blue = img.arr->at(srcH, srcW).blue;
-            
+    try{
+        for(int i=0;i<newHeight; i++){
+            for(int j=0; j<newWidth; j++){
+                
+                int srcH = (int)round((double)i / (double)newHeight * (double)img.height);
+                int srcW = (int)round((double)j / (double)newWidth * (double)img.width);
+                
+                if(srcH > img.height-1) srcH = img.height-1;
+                if(srcW > img.width-1) srcW = img.width-1;
+                
+                newArr->at(i, j).red = img.arr->at(srcH, srcW).red;
+                newArr->at(i, j).green = img.arr->at(srcH, srcW).green;
+                newArr->at(i, j).blue = img.arr->at(srcH, srcW).blue;
+                
+            }
         }
-        
+    } catch(const std::exception& e){
+        delete newArr;
+        throw std::invalid_argument("error while editing image");
     }
     
     delete img.arr;
@@ -56,18 +59,22 @@ void ImageEditor::crop(Image& img, int lx, int ly, int rx, int ry){
     
     Matrix<Pixel> *newArr = new Matrix<Pixel>(newHeight, newWidth);
     
-    
-    for(int i=0; i<newHeight; i++){
-        for(int j=0; j<newWidth; j++){
-            if(i+trueLy < img.height && i+trueLy>=0 && j+trueLx<img.width && j+trueLx>=0)
-                newArr->at(i, j) = img.arr->at(i+trueLy, j+trueLx);
-            else {
-                // maybe should throw exception here
-                std::cout<<"error while croppinng\n";
-                delete newArr;
-                return;
+    try{
+        for(int i=0; i<newHeight; i++){
+            for(int j=0; j<newWidth; j++){
+                if(i+trueLy < img.height && i+trueLy>=0 && j+trueLx<img.width && j+trueLx>=0)
+                    newArr->at(i, j) = img.arr->at(i+trueLy, j+trueLx);
+                else {
+                    // maybe should throw exception here
+                    std::cout<<"error while croppinng\n";
+                    delete newArr;
+                    return;
+                }
             }
         }
+    } catch(const std::exception& e){
+        delete newArr;
+        throw std::invalid_argument("error while editing image");
     }
     
     delete img.arr;
@@ -78,15 +85,25 @@ void ImageEditor::crop(Image& img, int lx, int ly, int rx, int ry){
 
 
 
-void ImageEditor::greenCake(Image& img){
-    for(int i=0;i<img.height;i++){
-        for(int j=0; j<img.width; j++){
-            int color = img.arr->at(i, j).red*0.21 + img.arr->at(i, j).green*0.72 + img.arr->at(i, j).blue*0.07;
-            img.arr->at(i, j).red = color;
-            img.arr->at(i, j).green = color;
-            img.arr->at(i, j).blue = color;
+void ImageEditor::grayscale(Image& img){
+    Matrix<Pixel>* newArr = new Matrix<Pixel>(*img.arr);
+    try{
+        for(int i=0;i<img.height;i++){
+            for(int j=0; j<img.width; j++){
+                int color = newArr->at(i, j).red*0.21 + newArr->at(i, j).green*0.72 + newArr->at(i, j).blue*0.07;
+                newArr->at(i, j).red = color;
+                newArr->at(i, j).green = color;
+                newArr->at(i, j).blue = color;
+            }
         }
     }
+    catch(const std::exception& e){
+        delete newArr;
+        throw std::invalid_argument("error while editing image");
+    }
+        
+    delete img.arr;
+    img.arr = newArr;
 }
 
 
@@ -105,6 +122,7 @@ void ImageEditor::dither1d(Image& img){
                 evaluatePixelAt(*newArr, i, j, (int)img.maxValue);
             }
     } catch(const std::exception& e){
+        delete newArr;
         throw std::invalid_argument("error while editing image");
     }
     
@@ -133,6 +151,7 @@ void ImageEditor::ditherFloyd(Image& img){
             }
         }
     } catch(const std::exception& e){
+        delete newArr;
         throw std::invalid_argument("error while editing image");
     }
 
@@ -160,6 +179,7 @@ void ImageEditor::ditherFakeFloyd(Image& img){
             }
         }
     } catch(const std::exception& e){
+        delete newArr;
         throw std::invalid_argument("error while editing image");
     }
 
@@ -188,6 +208,7 @@ void ImageEditor::ditherJJN(Image& img){
             }
         }
     } catch(const std::exception& e){
+        delete newArr;
         throw std::invalid_argument("error while editing image");
     }
 
@@ -216,6 +237,7 @@ void ImageEditor::ditherStucki(Image& img){
             }
         }
     } catch(const std::exception& e){
+        delete newArr;
         throw std::invalid_argument("error while editing image");
     }
 
@@ -244,6 +266,7 @@ void ImageEditor::ditherAtkinson(Image& img){
             }
         }
     } catch(const std::exception& e){
+        delete newArr;
         throw std::invalid_argument("error while editing image");
     }
 
@@ -272,6 +295,7 @@ void ImageEditor::ditherBurkes(Image& img){
             }
         }
     } catch(const std::exception& e){
+        delete newArr;
         throw std::invalid_argument("error while editing image");
     }
 
@@ -301,6 +325,7 @@ void ImageEditor::ditherSierra(Image& img){
             }
         }
     } catch(const std::exception& e){
+        delete newArr;
         throw std::invalid_argument("error while editing image");
     }
 
@@ -328,6 +353,7 @@ void ImageEditor::ditherSierraTwoRow(Image& img){
             }
         }
     } catch(const std::exception& e){
+        delete newArr;
         throw std::invalid_argument("error while editing image");
     }
 
@@ -355,6 +381,7 @@ void ImageEditor::ditherSierraLite(Image& img){
             }
         }
     } catch(const std::exception& e){
+        delete newArr;
         throw std::invalid_argument("error while editing image");
     }
 
@@ -384,6 +411,7 @@ void ImageEditor::dither4x4(Image& img){
             }
         }
     } catch(const std::exception& e){
+        delete newArr;
         throw std::invalid_argument("error while editing image");
     }
 
@@ -417,6 +445,7 @@ void ImageEditor::dither8x8(Image& img){
             }
         }
     } catch(const std::exception& e){
+        delete newArr;
         throw std::invalid_argument("error while editing image");
     }
 
@@ -438,34 +467,23 @@ void ImageEditor::diffusePixelsByMatrix(Matrix<Pixel>& arr, int curRow, int curC
             
             if(curRow+i < arr.getRows() && curRow+i >= 0 && curCol+j - offset < arr.getCols() && curCol+j - offset >= 0){
                 if((int)arr.at(curRow, curCol).red <= maxValue/2){
-                        arr.at(curRow+i, curCol+j-offset).red = arr.at(curRow+i, curCol+j-offset).red + (int)((double)arr.at(curRow, curCol).red / diviser * matrix[i][j]);
+                    arr.at(curRow+i, curCol+j-offset).red += (double)arr.at(curRow, curCol).red / diviser * matrix[i][j];
                 }else{
-                        arr.at(curRow+i, curCol+j-offset).red = arr.at(curRow+i, curCol+j-offset).red + (int)(((double)arr.at(curRow, curCol).red - (double)maxValue) / diviser * matrix[i][j]);
+                    arr.at(curRow+i, curCol+j-offset).red += ((double)arr.at(curRow, curCol).red - (double)maxValue) / diviser * matrix[i][j];
                 }
                 
                 if((int)arr.at(curRow, curCol).green <= maxValue/2){
-                        arr.at(curRow+i, curCol+j-offset).green = arr.at(curRow+i, curCol+j-offset).green + (int)((double)arr.at(curRow, curCol).green / diviser * matrix[i][j]);
+                    arr.at(curRow+i, curCol+j-offset).green += (double)arr.at(curRow, curCol).green / diviser * matrix[i][j];
                 }else{
-                        arr.at(curRow+i, curCol+j-offset).green = arr.at(curRow+i, curCol+j-offset).green + (int)(((double)arr.at(curRow, curCol).green - (double)maxValue) / diviser * matrix[i][j]);
+                    arr.at(curRow+i, curCol+j-offset).green += ((double)arr.at(curRow, curCol).green - (double)maxValue) / diviser * matrix[i][j];
                 }
                 
                 if((int)arr.at(curRow, curCol).blue <= maxValue/2){
-                        arr.at(curRow+i, curCol+j-offset).blue = arr.at(curRow+i, curCol+j-offset).blue + (int)((double)arr.at(curRow, curCol).blue / diviser * matrix[i][j]);
+                    arr.at(curRow+i, curCol+j-offset).blue  += (double)arr.at(curRow, curCol).blue / diviser * matrix[i][j];
                 }else{
-                        arr.at(curRow+i, curCol+j-offset).blue = arr.at(curRow+i, curCol+j-offset).blue + (int)(((double)arr.at(curRow, curCol).blue - (double)maxValue) / diviser * matrix[i][j]);
-                }
-                /*
-                if((int)img.arr->at(curRow, curCol).green <= (int)img.maxValue/2){
-                        img.arr->at(curRow+i, curCol+j-offset).green = img.arr->at(curRow+i, curCol+j-offset).green + (int)((double)img.arr->at(curRow, curCol).green / diviser * matrix[i][j]);
-                }else{
-                        img.arr->at(curRow+i, curCol+j-offset).green = img.arr->at(curRow+i, curCol+j-offset).green + (int)(((double)img.arr->at(curRow, curCol).green - (double)img.maxValue) / diviser * matrix[i][j]);
+                    arr.at(curRow+i, curCol+j-offset).blue += ((double)arr.at(curRow, curCol).blue - (double)maxValue) / diviser * matrix[i][j];
                 }
                 
-                if((int)img.arr->at(curRow, curCol).blue <= (int)img.maxValue/2){
-                        img.arr->at(curRow+i, curCol+j-offset).blue = img.arr->at(curRow+i, curCol+j-offset).blue + (int)((double)img.arr->at(curRow, curCol).blue / diviser * matrix[i][j]);
-                }else{
-                        img.arr->at(curRow+i, curCol+j-offset).blue = img.arr->at(curRow+i, curCol+j-offset).blue + (int)(((double)img.arr->at(curRow, curCol).blue - (double)img.maxValue) / diviser * matrix[i][j]);
-                }*/
             }
             
         }
@@ -484,9 +502,9 @@ void ImageEditor::diffuseInBlock(Matrix<Pixel>& arr, int curRow, int curCol, int
             if(curRow+i < arr.getRows() && curRow+i >= 0 && curCol+j - offset < arr.getCols() && curCol+j - offset >= 0){
                 
                 
-                arr.at(curRow+i, curCol+j-offset).red = arr.at(curRow+i, curCol+j-offset).red + (int)((double)maxValue/1.2*((double)matrix[i][j]/(double)diviser - 0.5));
-                arr.at(curRow+i, curCol+j-offset).green = arr.at(curRow+i, curCol+j-offset).green + (int)((double)maxValue/1.2*((double)matrix[i][j]/(double)diviser - 0.5));
-                arr.at(curRow+i, curCol+j-offset).blue = arr.at(curRow+i, curCol+j-offset).blue + (int)((double)maxValue/1.2*((double)matrix[i][j]/(double)diviser - 0.5));
+                arr.at(curRow+i, curCol+j-offset).red = arr.at(curRow+i, curCol+j-offset).red + (int)((double)maxValue*((double)matrix[i][j]/(double)diviser - 0.5));
+                arr.at(curRow+i, curCol+j-offset).green = arr.at(curRow+i, curCol+j-offset).green + (int)((double)maxValue*((double)matrix[i][j]/(double)diviser - 0.5));
+                arr.at(curRow+i, curCol+j-offset).blue = arr.at(curRow+i, curCol+j-offset).blue + (int)((double)maxValue*((double)matrix[i][j]/(double)diviser - 0.5));
                 
                 evaluatePixelAt(arr, curRow+i, curCol+j-offset, maxValue);
             }

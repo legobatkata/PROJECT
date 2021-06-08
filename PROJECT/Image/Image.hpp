@@ -25,20 +25,15 @@ class ImageEditor;
 
 class Image {
 private:
+    std::string currentPath = "\0";
     ImgType type{};
     int width{};
     int height{};
     int maxValue = 0;
-    
-    //Pixel*** arr{};
     Matrix<Pixel>* arr;
-    
-    //void allocatePixels();
-    //void releasePixels();
     
     ImgType strToType(const std::string& typeStr);
     std::string typeToStr(const ImgType& type);
-    
     
     void readHeader(std::ifstream& ifstr);
     void readData(std::ifstream& ifstr);
@@ -47,11 +42,12 @@ private:
 public:
     Image() = delete;
     ~Image();
-    Image(std::string& path);
-    Image(int width, int height, std::string hexCode);
+    Image(const std::string& path);
+    Image(int& width, int& height, const std::string& hexCode);
     
     
-    void save(std::string& path);
+    void saveAs(const std::string& path);
+    void save();
     
     void printHeader();
     void printData();

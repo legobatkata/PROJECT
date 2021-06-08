@@ -11,9 +11,9 @@
 std::string toUpperCase(const std::string& str);
 const unsigned int strToInt(const std::string& str);
 
-bool strContains(std::string str, char c);
+bool strContains(std::string& str, char c);
 void trimCommentFromStr(std::string& str, char c);
-unsigned int hexToDec(std::string hexStr);
+unsigned int hexStrToDecInt(const std::string& hexStr);
 
 void gotoNextLine(std::ifstream& fstr);
 std::string getNextParam(std::ifstream& fstr);

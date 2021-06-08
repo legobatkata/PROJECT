@@ -26,7 +26,7 @@ public:
         return instance;
     }
     
-    void greenCake(Image& img);
+    void grayscale(Image& img);
     void resize(Image& img, int newHeight, int newWidth);
     void resize(Image& img, double percentage);
     void crop(Image& img, int lx, int ly, int rx, int ry);

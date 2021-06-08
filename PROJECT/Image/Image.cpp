@@ -14,9 +14,10 @@ void Pixel::setAll(int color){
 }
 
 Pixel::Pixel(std::string hexStr){
-    red =  hexToDec(hexStr.substr(1, 2));
-    green = hexToDec(hexStr.substr(3, 2));
-    blue = hexToDec(hexStr.substr(5, 2));
+    if(hexStr.size() != 7 || hexStr[0] != '#') throw std::invalid_argument("invalid hex color");
+    red =  hexStrToDecInt(hexStr.substr(1, 2));
+    green = hexStrToDecInt(hexStr.substr(3, 2));
+    blue = hexStrToDecInt(hexStr.substr(5, 2));
 }
 
 
@@ -25,24 +26,31 @@ Image::~Image(){
     delete arr;
 }
 
-Image::Image(std::string& path){
+Image::Image(const std::string& path){
     std::ifstream istr(path, std::ios::binary);
+    if(!istr) throw std::invalid_argument("could not open file");
+        
+    
     readHeader(istr);
     arr = new Matrix<Pixel>(height, width);
     if(type == P6) istr.seekg((int)istr.tellg()-2);
     readData(istr);
+    
+    currentPath = path;
     istr.close();
 }
 
 
-Image::Image(int width, int height, std::string hexCode){
+Image::Image(int& width, int& height, const std::string& hexCode){
+    if(width <= 0 || height <= 0) throw std::invalid_argument("invalid width or height");
+    Pixel p(hexCode);
+    
     this->type = P3;
     this->height = height;
     this->width = width;
     this->maxValue = 255;
     arr = new Matrix<Pixel>(height, width);
     
-    Pixel p(hexCode);
     for(int i=0; i<height; i++){
         for(int j=0; j<width; j++){
             arr->at(i, j).red = p.red;
@@ -53,13 +61,23 @@ Image::Image(int width, int height, std::string hexCode){
 }
 
 
-void Image::save(std::string& path){
+void Image::saveAs(const std::string& path){
     std::ofstream ofstr(path);
+    if(!ofstr) throw std::invalid_argument("error while saving at this path");
+    
     writeHeader(ofstr);
     writeData(ofstr);
+    
+    currentPath = path;
     ofstr.close();
 }
 
+
+void Image::save(){
+    if(currentPath[0] != '\0')
+        saveAs(currentPath);
+    else throw std::invalid_argument("no path found, please first use SaveAs /path/");
+}
 
 
 ImgType Image::strToType(const std::string& typeStr){

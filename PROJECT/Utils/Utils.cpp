@@ -20,23 +20,24 @@ const unsigned int strToInt(const std::string& str){
 }
 
 
-unsigned int hexToDec(std::string hexStr){
+unsigned int hexStrToDecInt(const std::string& hexStr){
     unsigned int res = 0;
     for (int i = 0; i < hexStr.length(); ++i){
-        if (hexStr[i] >= 48 && hexStr[i] <= 57)
-            res += (hexStr[i] - 48) * pow(16, hexStr.length() - i - 1);
-        else if (hexStr[i] >= 65 && hexStr[i] <= 70)
-            res += (hexStr[i] - 55) * pow(16, hexStr.length() - i - 1);
-        else if (hexStr[i] >= 97 && hexStr[i] <= 102)
-            res += (hexStr[i] - 87) * pow(16, hexStr.length() - i - 1);
+        if (hexStr[i] >= '0' && hexStr[i] <= '9')
+            res += (hexStr[i] - '0') * pow(16, hexStr.length() - i - 1);
+        else if (hexStr[i] >= 'A' && hexStr[i] <= 'F')
+            res += (hexStr[i] - 'A'-10) * pow(16, hexStr.length() - i - 1);
+        else if (hexStr[i] >= 'a' && hexStr[i] <= 'f')
+            res += (hexStr[i] - 'a'-10) * pow(16, hexStr.length() - i - 1);
     }
     return res;
 }
 
-// TODO: move these to their own file later
 
 
-bool strContains(std::string str, char c){
+// file functions
+
+bool strContains(std::string& str, char c){
     for(int i=0; i<str.size(); i++){
         if(str[i] == c) return true;
     }
@@ -80,8 +81,6 @@ std::string getNextParam(std::ifstream& fstr){
     return "\0";
     
 }
-
-
 
 uint8_t getNextByte(std::ifstream& fstr){
     
