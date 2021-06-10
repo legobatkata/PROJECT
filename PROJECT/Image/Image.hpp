@@ -29,7 +29,7 @@ private:
     ImgType type{};
     int width{};
     int height{};
-    int maxValue = 0;
+    int maxValue = 1;
     Matrix<Pixel>* arr;
     
     ImgType strToType(const std::string& typeStr);
@@ -45,13 +45,13 @@ public:
     Image(const std::string& path);
     Image(int width, int height, const std::string& hexCode);
     
-    
     void saveAs(const std::string& path);
     void save();
     
-    void printHeader();
-    void printData();
-    
+    ImgType getType()const;
+    int getWidth()const;
+    int getHeight()const;
+    int getMaxValue()const;
     
     friend class ImageEditor;
 };

@@ -234,17 +234,15 @@ void Image::writeData(std::ofstream& ofstr){
 }
 
 
-void Image::printHeader(){
-    std::cout<<"type: "<<typeToStr(type)<<"\n";
-    std::cout<<"width: "<<width<<"\n";
-    std::cout<<"height: "<<height<<"\n";
-    std::cout<<"maxValue: "<<maxValue<<"\n";
+ImgType Image::getType()const{
+    return type;
 }
-
-void Image::printData(){
-    for(int i=0; i<height; i++){
-        for(int j=0; j<width; j++){
-            std::cout<<arr->at(i, j).red<<" "<<arr->at(i, j).green<<" "<<arr->at(i, j).blue<<"\n";
-        }
-    }
+int Image::getWidth()const{
+    return width;
+}
+int Image::getHeight()const{
+    return height;
+}
+int Image::getMaxValue()const{
+    return maxValue;
 }
