@@ -41,7 +41,7 @@ Image::Image(const std::string& path){
 }
 
 
-Image::Image(int& width, int& height, const std::string& hexCode){
+Image::Image(int width, int height, const std::string& hexCode){
     if(width <= 0 || height <= 0) throw std::invalid_argument("invalid width or height");
     Pixel p(hexCode);
     

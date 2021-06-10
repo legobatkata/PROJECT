@@ -20,15 +20,16 @@ const unsigned int strToInt(const std::string& str){
 }
 
 
-unsigned int hexStrToDecInt(const std::string& hexStr){
-    unsigned int res = 0;
+int hexStrToDecInt(const std::string& hexStr){
+    int res = 0;
     for (int i = 0; i < hexStr.length(); ++i){
+        if(!isxdigit(hexStr[i])) throw std::invalid_argument("hex string contains an non hex digit");
         if (hexStr[i] >= '0' && hexStr[i] <= '9')
             res += (hexStr[i] - '0') * pow(16, hexStr.length() - i - 1);
         else if (hexStr[i] >= 'A' && hexStr[i] <= 'F')
-            res += (hexStr[i] - 'A'-10) * pow(16, hexStr.length() - i - 1);
+            res += (hexStr[i] - 'A' + 10) * pow(16, hexStr.length() - i - 1);
         else if (hexStr[i] >= 'a' && hexStr[i] <= 'f')
-            res += (hexStr[i] - 'a'-10) * pow(16, hexStr.length() - i - 1);
+            res += (hexStr[i] - 'a' + 10) * pow(16, hexStr.length() - i - 1);
     }
     return res;
 }

@@ -43,7 +43,7 @@ public:
     Image() = delete;
     ~Image();
     Image(const std::string& path);
-    Image(int& width, int& height, const std::string& hexCode);
+    Image(int width, int height, const std::string& hexCode);
     
     
     void saveAs(const std::string& path);

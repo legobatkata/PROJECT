@@ -14,8 +14,8 @@
             filePath = "PROJECT/Utils/Utils.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "60"
-            endingLineNumber = "60"
+            startingLineNumber = "61"
+            endingLineNumber = "61"
             landmarkName = "getNextParam(fstr)"
             landmarkType = "9">
          </BreakpointContent>
@@ -94,9 +94,9 @@
             filePath = "PROJECT/CommandController/CommandController.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "46"
-            endingLineNumber = "46"
-            landmarkName = "CommandController::executeCommand(cmd, istr)"
+            startingLineNumber = "52"
+            endingLineNumber = "52"
+            landmarkName = "CommandController::executeCommand(cmd)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

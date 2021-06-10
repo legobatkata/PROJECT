@@ -14,6 +14,8 @@
 		F07104DE266E774F00E1D715 /* Command.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F07104DB266E774F00E1D715 /* Command.cpp */; };
 		F07104E6266E77E400E1D715 /* CommandController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F07104E4266E77E400E1D715 /* CommandController.cpp */; };
 		F07104E7266E77E400E1D715 /* CommandController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F07104E4266E77E400E1D715 /* CommandController.cpp */; };
+		F076473626721B3F00A48D96 /* Utils_tests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F076473426721B3F00A48D96 /* Utils_tests.cpp */; };
+		F076473726721B3F00A48D96 /* Command_tests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F076473526721B3F00A48D96 /* Command_tests.cpp */; };
 		F09E04AC2614AB1600555F87 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F09E04AB2614AB1600555F87 /* main.cpp */; };
 		F0CBFF382659167C00DCD6EE /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F0CBFF372659167C00DCD6EE /* main.cpp */; };
 		F0CBFF402659186300DCD6EE /* catch2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F0CBFF3F2659186300DCD6EE /* catch2.cpp */; };
@@ -53,6 +55,8 @@
 		F07104DC266E774F00E1D715 /* Command.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Command.hpp; sourceTree = "<group>"; };
 		F07104E4266E77E400E1D715 /* CommandController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CommandController.cpp; sourceTree = "<group>"; };
 		F07104E5266E77E400E1D715 /* CommandController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CommandController.hpp; sourceTree = "<group>"; };
+		F076473426721B3F00A48D96 /* Utils_tests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Utils_tests.cpp; sourceTree = "<group>"; };
+		F076473526721B3F00A48D96 /* Command_tests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Command_tests.cpp; sourceTree = "<group>"; };
 		F09E04A82614AB1600555F87 /* PROJECT */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = PROJECT; sourceTree = BUILT_PRODUCTS_DIR; };
 		F09E04AB2614AB1600555F87 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		F0CBFF352659167C00DCD6EE /* PROJECT_TESTS */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = PROJECT_TESTS; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -156,7 +160,9 @@
 				F0CBFF3F2659186300DCD6EE /* catch2.cpp */,
 				F0CBFF3E2659186300DCD6EE /* catch2.hpp */,
 				F0CBFF372659167C00DCD6EE /* main.cpp */,
+				F076473426721B3F00A48D96 /* Utils_tests.cpp */,
 				F07104D0266D243800E1D715 /* Matrix_tests.cpp */,
+				F076473526721B3F00A48D96 /* Command_tests.cpp */,
 			);
 			path = PROJECT_TESTS;
 			sourceTree = "<group>";
@@ -274,7 +280,9 @@
 				F0CBFF402659186300DCD6EE /* catch2.cpp in Sources */,
 				F07104DE266E774F00E1D715 /* Command.cpp in Sources */,
 				F0CBFF4E265D928800DCD6EE /* Image.cpp in Sources */,
+				F076473626721B3F00A48D96 /* Utils_tests.cpp in Sources */,
 				F07104782667CDCD00E1D715 /* ImageEditor.cpp in Sources */,
+				F076473726721B3F00A48D96 /* Command_tests.cpp in Sources */,
 				F0CBFF55265FEFA600DCD6EE /* Utils.cpp in Sources */,
 				F0CBFF382659167C00DCD6EE /* main.cpp in Sources */,
 			);

@@ -19,7 +19,8 @@ Command::Command(std::string raw){
         }
         index++;
     }
-    arrString.push_back(newStr);
+    if(newStr != "\0")
+        arrString.push_back(newStr);
 }
 
 string& Command::operator [](const std::size_t& pos){

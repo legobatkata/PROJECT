@@ -14,7 +14,7 @@ private:
     void allocate();
     void copy(const Matrix& newM);
 public:
-    Matrix();
+    //Matrix();
     Matrix(int rows, int cols);
     ~Matrix();
     Matrix<T>& operator =(const Matrix<T>& newM);
@@ -30,10 +30,10 @@ public:
     
 };
 
-template <class T>
-Matrix<T>::Matrix(){
-    allocate();
-}
+//template <class T>
+//Matrix<T>::Matrix(){
+//    allocate();
+//}
 
 template <class T>
 void Matrix<T>::releaseByRows(int m_rows){
@@ -83,6 +83,7 @@ Matrix<T>::Matrix(const Matrix<T>& newM){
 
 template <class T>
 Matrix<T>::Matrix(int rows, int cols){
+    if(rows <= 0 || cols <= 0) throw std::invalid_argument("cannot allocate a matrix with given parameters");
     this->rows = rows;
     this->cols = cols;
     allocate();
