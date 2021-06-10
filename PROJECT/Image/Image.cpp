@@ -30,10 +30,8 @@ Image::Image(const std::string& path){
     std::ifstream istr(path, std::ios::binary);
     if(!istr) throw std::invalid_argument("could not open file");
         
-    
     readHeader(istr);
     arr = new Matrix<Pixel>(height, width);
-    if(type == P6) istr.seekg((int)istr.tellg()-2);
     readData(istr);
     
     currentPath = path;
@@ -121,115 +119,125 @@ void Image::writeHeader(std::ofstream& ofstr){
 
 void Image::readData(std::ifstream &ifstr){
     std::string input;
-    int value;
-    for(int i=0; i<height; i++){
-        for(int j=0; j<width; j++){
+    
+    switch (type){
             
+        case ImgType::P1:
+        case ImgType::P2: {
+            for(int i=0; i<height; i++){
+                for(int j=0; j<width; j++){
+                    std::string input = getNextParam(ifstr);
+                    arr->at(i, j).red = strToInt(input);
+                    arr->at(i, j).green = strToInt(input);
+                    arr->at(i, j).blue = strToInt(input);
+                }
+            }
+            break;
+        }
             
-            switch (type){
-                case ImgType::P1:
-                case ImgType::P2: {
-                    input = getNextParam(ifstr);
-                    value = strToInt(input);
-                    
-                    arr->at(i, j).red = value;
-                    arr->at(i, j).green = value;
-                    arr->at(i, j).blue = value;
-                    
-                    break;
+        case ImgType::P3:{
+            for(int i=0; i<height; i++){
+                for(int j=0; j<width; j++){
+                    arr->at(i, j).red = strToInt(getNextParam(ifstr));;
+                    arr->at(i, j).green = strToInt(getNextParam(ifstr));;
+                    arr->at(i, j).blue = strToInt(getNextParam(ifstr));;
                 }
-                case ImgType::P3:{
-                    std::string pixRstr = getNextParam(ifstr);
-                    std::string pixGstr = getNextParam(ifstr);
-                    std::string pixBstr = getNextParam(ifstr);
-                    
-                    int pixRint = strToInt(pixRstr);
-                    int pixGint = strToInt(pixGstr);
-                    int pixBint = strToInt(pixBstr);
-                    
-                    arr->at(i, j).red = pixRint;
-                    arr->at(i, j).green = pixGint;
-                    arr->at(i, j).blue = pixBint;
-                    
-                    break;
+            }
+            break;
+        }
+        case ImgType::P4:{
+            throw std::invalid_argument("sorry, binary bitmap is not currently supported by this software");
+            break;
+        }
+            
+        case ImgType::P5:{
+            for(int i=0; i<height; i++){
+                for(int j=0; j<width; j++){
+                    int binValue = (int)getNextByte(ifstr);
+                    arr->at(i, j).red = binValue;
+                    arr->at(i, j).green = binValue;
+                    arr->at(i, j).blue = binValue;
                 }
-                case ImgType::P4:{
-                    
-                    
-                    
-                    break;
-                }
-                case ImgType::P5:{
-                    int value = (int)getNextByte(ifstr);
-                    
-                    arr->at(i, j).red = value;
-                    arr->at(i, j).green = value;
-                    arr->at(i, j).blue = value;
-                    
-                    break;
-                }
-                case ImgType::P6:{
-                    int red = (int)getNextByte(ifstr);
-                    int green = (int)getNextByte(ifstr);
-                    int blue = (int)getNextByte(ifstr);
-                    
-                    arr->at(i, j).red = red;
-                    arr->at(i, j).green = green;
-                    arr->at(i, j).blue = blue;
-                    
-                    break;
-                }
-                default:
-                    break;
             }
             
-            
+            break;
         }
+            
+        case ImgType::P6:{
+            ifstr.seekg((int)ifstr.tellg()-2);
+            for(int i=0; i<height; i++){
+                for(int j=0; j<width; j++){
+                    arr->at(i, j).red = (int)getNextByte(ifstr);
+                    arr->at(i, j).green = (int)getNextByte(ifstr);
+                    arr->at(i, j).blue = (int)getNextByte(ifstr);
+                }
+            }
+            
+            break;
+        }
+        default:
+            break;
     }
+            
+            
     
 }
 void Image::writeData(std::ofstream& ofstr){
-    for(int i=0; i<height; i++){
-        for(int j=0; j<width; j++){
-            
-            switch (type) {
-                case ImgType::P1:
-                case ImgType::P2:{
+    switch (type) {
+        case ImgType::P1:
+        case ImgType::P2:{
+            for(int i=0; i<height; i++){
+                for(int j=0; j<width; j++){
                     ofstr<<arr->at(i, j).red<<" ";
-                    break;
                 }
-                case ImgType::P3:{
+                ofstr<<"\n";
+            }
+            break;
+        }
+            
+        case ImgType::P3:{
+            for(int i=0; i<height; i++){
+                for(int j=0; j<width; j++){
                     ofstr<<arr->at(i, j).red<<" ";
                     ofstr<<arr->at(i, j).green<<" ";
                     ofstr<<arr->at(i, j).blue<<" ";
-                    break;
                 }
-                case ImgType::P4:{
-                   
-                    
-                    break;
-                }
-                case ImgType::P5:{
+                ofstr<<"\n";
+            }
+            break;
+        }
+            
+        case ImgType::P4:{
+            throw std::invalid_argument("sorry, binary bitmap is not currently supported by this software");
+            break;
+        }
+            
+        case ImgType::P5:{
+            for(int i=0; i<height; i++){
+                for(int j=0; j<width; j++){
                     uint8_t val = (uint8_t)arr->at(i, j).red;
                     ofstr.write((char*)&val, sizeof(val));
-                    break;
                 }
-                case ImgType::P6:{
+            }
+            break;
+        }
+            
+        case ImgType::P6:{
+            for(int i=0; i<height; i++){
+                for(int j=0; j<width; j++){
                     uint8_t redWrite = (uint8_t)arr->at(i, j).red;
                     uint8_t greenWrite = (uint8_t)arr->at(i, j).green;
                     uint8_t blueWrite = (uint8_t)arr->at(i, j).blue;
-                    
+            
                     ofstr.write((char*)&redWrite, sizeof(redWrite));
                     ofstr.write((char*)&greenWrite, sizeof(greenWrite));
                     ofstr.write((char*)&blueWrite, sizeof(blueWrite));
-                    break;
                 }
-                default:
-                    break;
             }
-            
+            break;
         }
-        //ofstr<<"\n";
+        default:
+            break;
     }
 }
 

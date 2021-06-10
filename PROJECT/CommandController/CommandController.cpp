@@ -61,13 +61,24 @@ bool CommandController::executeCommand(const Command& cmd){
     else if(strcmp(firstArg.c_str(), "OPEN")==0){
         try{
             if(hasOpened){ //throw std::invalid_argument(file_already_opened);
-                Command closeCmd("CLOSE");
-                executeCommand(toUpperCase(cmd[0]));
+                std::cout<<"Are you sure you want to close the current file?\n";
+                std::string response;
+                getline(std::cin, response);
+                Command responseCmd(response);
+                
+                if(strcmp(toUpperCase(responseCmd[0]).c_str(), "YES") == 0 || strcmp(toUpperCase(responseCmd[0]).c_str(), "Y") == 0){
+                    delete img;
+                    if(cmd.getSize() != 2) throw std::invalid_argument("wrong use of command, please use as: open [path]");
+                    
+                    img = new Image(cmd[1]);
+                    hasOpened = true;
+                }
+            } else {
+                if(cmd.getSize() != 2) throw std::invalid_argument("wrong use of command, please use as: open [path]");
+                
+                img = new Image(cmd[1]);
+                hasOpened = true;
             }
-            if(cmd.getSize() != 2) throw std::invalid_argument("wrong use of command, please use as: open [path]");
-            
-            img = new Image(cmd[1]);
-            hasOpened = true;
             
         } catch (const std::exception& e){
             std::cout<<e.what()<<"\n";
