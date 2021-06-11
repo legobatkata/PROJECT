@@ -42,11 +42,11 @@
  * \section sec_2 More information
  * The program was developed using the CLang compiler on MacOS with Xcode as an IDE.\n
  * All of the code and tests compile and run without problem under those conditions.\n
- * Code has been also tested on windows and it should be compiling on VSCode without problem too. (mersi teo xd)\n
+ * Code has been also tested on windows and it should be compiling on CodeBlocks with g++ without problems too. \n
  * Please contact me if any technical problems arise while examining.\n
  *
  * \section sec_3 Currently known issues
- * The biggest problem of the program right now is the fact that it cannot currently read a binary bitmap.\n
+ * The biggest known problem of the program right now is the fact that it cannot currently read a binary bitmap (P4 type).\n
  * This is currently handled by throwing an exception whenever the user tries to read a binary bitmap image.\n
  *
  *\section sec_4 Credits
@@ -54,6 +54,7 @@
  *ФН: 45763\n
  *Специалност: Информатика\n
  *Група: 2\n
+ *github repo: https://github.com/legobatkata/PROJECT
  *
  *
  */

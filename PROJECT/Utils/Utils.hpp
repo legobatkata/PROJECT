@@ -2,7 +2,7 @@
 #define Utils_hpp
 
 #include <iostream>
-#include <string>
+#include <cstring>
 #include <cmath>
 #include <exception>
 #include <fstream>
