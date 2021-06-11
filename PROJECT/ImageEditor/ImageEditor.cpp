@@ -46,16 +46,14 @@ void ImageEditor::crop(Image& img, int lx, int ly, int rx, int ry){
     int trueRx = std::max(lx, rx);
     
     if(trueLx >= img.width || trueLy >= img.height){
-        // maybe should throw exception here
-        std::cout<<"invalid cropping coordinates\n";
-        return;
+        throw std::invalid_argument("invalid cropping coordinates");
     }
     
     int endX = std::min(trueRx, img.width);
     int endY = std::min(trueRy, img.height);
     
-    int newHeight = endY - trueLy;
-    int newWidth = endX - trueLx;
+    int newHeight = endY - trueLy + 1;
+    int newWidth = endX - trueLx + 1;
     
     Matrix<Pixel> *newArr = new Matrix<Pixel>(newHeight, newWidth);
     
@@ -64,12 +62,6 @@ void ImageEditor::crop(Image& img, int lx, int ly, int rx, int ry){
             for(int j=0; j<newWidth; j++){
                 if(i+trueLy < img.height && i+trueLy>=0 && j+trueLx<img.width && j+trueLx>=0)
                     newArr->at(i, j) = img.arr->at(i+trueLy, j+trueLx);
-                else {
-                    // maybe should throw exception here
-                    std::cout<<"error while croppinng\n";
-                    delete newArr;
-                    return;
-                }
             }
         }
     } catch(const std::exception& e){

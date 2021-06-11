@@ -69,13 +69,11 @@ bool CommandController::executeCommand(const Command& cmd){
                 if(strcmp(toUpperCase(responseCmd[0]).c_str(), "YES") == 0 || strcmp(toUpperCase(responseCmd[0]).c_str(), "Y") == 0){
                     delete img;
                     if(cmd.getSize() != 2) throw std::invalid_argument("wrong use of command, please use as: open [path]");
-                    
                     img = new Image(cmd[1]);
                     hasOpened = true;
                 }
             } else {
                 if(cmd.getSize() != 2) throw std::invalid_argument("wrong use of command, please use as: open [path]");
-                
                 img = new Image(cmd[1]);
                 hasOpened = true;
             }
@@ -142,6 +140,17 @@ bool CommandController::executeCommand(const Command& cmd){
                 ImageEditor::getInstance().resize(*img, strToInt(cmd[1]));
             }
             else throw std::invalid_argument("Wrong use of command, please use as: resize [new width] [new height]\nor as: resize [percentage]");
+            
+        } catch (const std::exception& e){
+            std::cout<<e.what()<<"\n";
+        }
+    }
+    
+    else if(strcmp(firstArg.c_str(), "GRAYSCALE")==0){
+        try{
+            if(!hasOpened) throw std::invalid_argument(no_file_opened);
+            if(cmd.getSize() != 1)throw std::invalid_argument("too many arguments");
+            ImageEditor::getInstance().grayscale(*img);
             
         } catch (const std::exception& e){
             std::cout<<e.what()<<"\n";

@@ -60,6 +60,11 @@ Image::Image(int width, int height, const std::string& hexCode){
 
 
 void Image::saveAs(const std::string& path){
+    std::string ext = getExtFromPath(path);
+    if((type == P1 || type == P4) && ext != "pbm") throw std::invalid_argument("this is not a valid extention for this file, please use .pbm instead");
+    if((type == P2 || type == P5) && ext != "pgm") throw std::invalid_argument("this is not a valid extention for this file, please use .pgm instead");
+    if((type == P3 || type == P6) && ext != "ppm") throw std::invalid_argument("this is not a valid extention for this file, please use .ppm instead");
+    
     std::ofstream ofstr(path);
     if(!ofstr) throw std::invalid_argument("error while saving at this path");
     

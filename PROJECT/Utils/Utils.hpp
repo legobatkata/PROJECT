@@ -14,6 +14,7 @@ const unsigned int strToInt(const std::string& str);
 bool strContains(std::string& str, char c);
 void trimCommentFromStr(std::string& str, char c);
 int hexStrToDecInt(const std::string& hexStr);
+std::string getExtFromPath(const std::string& path);
 
 void gotoNextLine(std::ifstream& fstr);
 std::string getNextParam(std::ifstream& fstr);

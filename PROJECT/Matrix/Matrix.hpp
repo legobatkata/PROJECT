@@ -14,7 +14,7 @@ private:
     void allocate();
     void copy(const Matrix& newM);
 public:
-    //Matrix();
+    Matrix() = delete;
     Matrix(int rows, int cols);
     ~Matrix();
     Matrix<T>& operator =(const Matrix<T>& newM);
@@ -30,10 +30,6 @@ public:
     
 };
 
-//template <class T>
-//Matrix<T>::Matrix(){
-//    allocate();
-//}
 
 template <class T>
 void Matrix<T>::releaseByRows(int m_rows){

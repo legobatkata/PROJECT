@@ -2,11 +2,8 @@
 #define CommandController_hpp
 
 #include "../Command/Command.hpp"
-#include "../Utils/Utils.hpp"
-#include "../Image/Image.hpp"
 #include "../ImageEditor/ImageEditor.hpp"
 
-#include <fstream>
 
 const std::string no_file_opened = "No file is currently open\n";
 const std::string file_already_opened = "There is already an opened file\n";

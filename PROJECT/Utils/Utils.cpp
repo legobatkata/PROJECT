@@ -22,7 +22,7 @@ const unsigned int strToInt(const std::string& str){
 
 int hexStrToDecInt(const std::string& hexStr){
     int res = 0;
-    for (int i = 0; i < hexStr.length(); ++i){
+    for (int i = 0; i < hexStr.size(); ++i){
         if(!isxdigit(hexStr[i])) throw std::invalid_argument("hex string contains an non hex digit");
         if (hexStr[i] >= '0' && hexStr[i] <= '9')
             res += (hexStr[i] - '0') * pow(16, hexStr.length() - i - 1);
@@ -34,6 +34,11 @@ int hexStrToDecInt(const std::string& hexStr){
     return res;
 }
 
+std::string getExtFromPath(const std::string& path){
+    if(path.size() < 5) throw std::invalid_argument("path too short");
+    if(path[path.size()-4] != '.') throw std::invalid_argument("no extention found");
+    return path.substr(path.size()-3, path.size());
+}
 
 
 // file functions
@@ -54,7 +59,7 @@ void trimCommentFromStr(std::string& str, char c){
 
 void gotoNextLine(std::ifstream& fstr){
     std::string blah;
-    getline(fstr,blah);
+    getline(fstr, blah);
 }
 
 
