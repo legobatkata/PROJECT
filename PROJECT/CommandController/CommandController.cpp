@@ -1,9 +1,13 @@
 #include "CommandController.hpp"
 
-CommandController::CommandController(){}
-
 CommandController::CommandController(std::string path){
-    img = new Image(path);
+    try{
+        img = new Image(path);
+        hasOpened = true;
+    } catch (const std::exception& e){
+        hasOpened = false;
+        std::cout<<e.what()<<"\n";
+    }
 }
 
 CommandController::~CommandController(){
@@ -60,7 +64,7 @@ bool CommandController::executeCommand(const Command& cmd){
     
     else if(strcmp(firstArg.c_str(), "OPEN")==0){
         try{
-            if(hasOpened){ //throw std::invalid_argument(file_already_opened);
+            if(hasOpened){
                 std::cout<<"Are you sure you want to close the current file?\n";
                 std::string response;
                 getline(std::cin, response);
@@ -85,7 +89,7 @@ bool CommandController::executeCommand(const Command& cmd){
     
     else if(strcmp(firstArg.c_str(), "NEW")==0){
         try{
-            if(hasOpened){ //throw std::invalid_argument(file_already_opened);
+            if(hasOpened){
                 Command closeCmd("CLOSE");
                 executeCommand(toUpperCase(cmd[0]));
             }
@@ -103,7 +107,6 @@ bool CommandController::executeCommand(const Command& cmd){
         try{
             if(!hasOpened) throw std::invalid_argument(no_file_opened);
             if(cmd.getSize() != 2)throw std::invalid_argument("Wrong use of command, please use as: saveas [save path]");
-            // maybe check if path extention is correct here too
             img->saveAs(cmd[1]);
         } catch (const std::exception& e){
             std::cout<<e.what()<<"\n";
@@ -162,7 +165,6 @@ bool CommandController::executeCommand(const Command& cmd){
             if(!hasOpened) throw std::invalid_argument(no_file_opened);
             if(cmd.getSize() != 2) throw std::invalid_argument("Wrong use of command, please enter again and specify which dithering algorithm to use:\n1: basic 1 dimensional dither\n2: Floyd-Steinberg\n3: Fake Floyd-Steinberg\n4: Jarvis, Judice, and Ninke\n5: Stucki\n6: Atkinson\n7: Burkes\n8: Sierra\n9: Two-Row Sierra\n10: Sierra Lite\n11: 4x4 Bayer matrix\n12: 8x8 Bayer matrix\n");
             int algo = strToInt(cmd[1]);
-            //ImageEditor::getInstance().grayscale(*img);
             switch (algo){
                 case 1:
                     ImageEditor::getInstance().dither1d(*img);

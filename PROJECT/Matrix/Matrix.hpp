@@ -3,6 +3,10 @@
 
 #include <iostream>
 
+/**
+ Template class that creates and manages an n by m matrix of whatever class is given to it as a template.
+ Used mainly as a holder for the Image class's Pixels.
+ */
 template<class T>
 class Matrix{
 private:
@@ -25,9 +29,6 @@ public:
     
     int getRows() const;
     int getCols() const;
-    
-    void print() const;
-    
 };
 
 

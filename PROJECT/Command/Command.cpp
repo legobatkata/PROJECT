@@ -23,10 +23,10 @@ Command::Command(std::string raw){
         arrString.push_back(newStr);
 }
 
-string& Command::operator [](const std::size_t& pos){
+string& Command::operator [](const std::size_t pos){
     return arrString[pos];
 }
-const string& Command::operator [](const std::size_t& pos) const {
+const string& Command::operator [](const std::size_t pos) const {
     return arrString[pos];
 }
 
